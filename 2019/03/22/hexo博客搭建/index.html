@@ -139,8 +139,8 @@
 <p>其中<a href="mailto:your_email@example.com" target="_blank" rel="noopener">your_email@example.com</a>换成自己的git帐号邮箱即可</p>
 <p>生成的文件默认会放在之前提到的.ssh目录中，我们需要获得公钥的值，在命令行输入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
-<p>该命令将公钥文件中的值，也就是一个很长的字符串输出到命令行中，复制该值备用。<br>登录自己的github帐号,找到setting&gt;SSH and GPH keys&gt;New SSH key,<br><img src="https://github.com/ixmwl/resource/blob/master/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/ssh%E9%85%8D%E7%BD%AE1.png?raw=true" alt></p>
-<p>上传复制备用的公钥值即可,如下图:<br><img src="https://github.com/ixmwl/resource/blob/master/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/ssh%E9%85%8D%E7%BD%AE2.png?raw=true" alt></p>
+<p>该命令将公钥文件中的值，也就是一个很长的字符串输出到命令行中，复制该值备用。<br>登录自己的github帐号,找到setting&gt;SSH and GPH keys&gt;New SSH key,<br><img src="https://github.com/ixmwl/BlogResource/blob/master/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/ssh%E9%85%8D%E7%BD%AE1.png?raw=true" alt></p>
+<p>上传复制备用的公钥值即可,如下图:<br><img src="https://github.com/ixmwl/BlogResource/blob/master/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/ssh%E9%85%8D%E7%BD%AE2.png?raw=true" alt></p>
 <h2 id="Node-js安装"><a href="#Node-js安装" class="headerlink" title="Node.js安装"></a>Node.js安装</h2><p>Node是javascript的一种运行时环境，也是近年来非常流行的一门技术。安装Node.js的最佳方式是使用nvm。在命令行输入</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash</span><br></pre></td></tr></table></figure>
 <p>这条命令通过curl下载install.sh脚本，并执行脚本。待执行完成后，它会把nvm命令的执行路径放到~/.bashrc文件里，我们可以用cat命令来查看一下</p>
