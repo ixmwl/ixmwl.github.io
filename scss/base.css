@@ -420,7 +420,7 @@ header {
     visibility: hidden; }
   .post-navigation div {
     padding: 10px 0 0 0;
-    width: 45%;
+    width: 60%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }

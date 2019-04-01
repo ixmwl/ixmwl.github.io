@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
+  <!-- <link rel="stylesheet" href="/highlight/styles/xcode.css"> -->
+  <link rel="stylesheet" href="/highlight/styles/default.css">
+  <script src="/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
   
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
@@ -229,19 +233,138 @@
     <div class="markdown-body">
       <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>ViewController 不出意外在iOS工程中是代码量最多也是最常见的文件,很多时候ViewController 中的代码复用率是很低的,所以有时候打开一个ViewController放目望去几千行代码的时候,心里总有些打退堂鼓. 如果没有详细的注释说明,想做个性化修改或者功能的增减就会变得很繁琐. 所以就有了更轻量级的ViewController这篇文章的由来.轻量级,其实就是给ViewController瘦身,把ViewController中的部分代码移到更合适的地方,让代码变得可以更好的复用.</p>
 <h2 id="Delegate的分离"><a href="#Delegate的分离" class="headerlink" title="Delegate的分离"></a>Delegate的分离</h2><p>在iOS框架中,系统给我们提供了很多封装好的控件,比如TableView、CollectionView、TextField<br>但是在使用的过程中是否会发现,我们会将这些控件的很多代理方法也放在ViewController中实现,增加了ViewController的体积,所以就有了将代理分离出去的想法,把这些控件的delegate托付给其他的类去实现.下面就以tableView为例,做一下尝试. 按照正常思路如果写一个table,你会看到如下代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;ViewController.h&quot;</span><br><span class="line">@interface ViewController ()&lt;UITableViewDelegate,UITableViewDataSource&gt;</span><br><span class="line">@property (nonatomic, strong) UITableView *tableView;</span><br><span class="line">@end</span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">-(UITableView *)tableView&#123;</span><br><span class="line">    if (!_tableView) &#123;</span><br><span class="line">        UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];</span><br><span class="line">        tableView.delegate = self.tableViewDelegate;</span><br><span class="line">        tableView.dataSource = self.tableViewDataSource;</span><br><span class="line">        [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@&quot;cell&quot;];</span><br><span class="line">        [self.view addSubview:tableView];</span><br><span class="line">        _tableView = self.tableView;</span><br><span class="line">    &#125;</span><br><span class="line">    return _tableView;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - TableViewDelegate &amp; Datasource</span><br><span class="line">- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</span><br><span class="line">&#123;</span><br><span class="line">    return 3;</span><br><span class="line">&#125;</span><br><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line">&#123;</span><br><span class="line">    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;cell&quot; forIndexPath:indexPath];</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line">- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line">&#123;</span><br><span class="line">    return 44;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们此处为ViewController寻一个“代理”,新增继承NSObject两个类TableViewDelegate、TableViewDataSource,让他帮忙去实现一大堆的代理方法,.h中配置代理,.m中实现代理,如下:</p>
+<pre><code>#import &quot;ViewController.h&quot;
+@interface ViewController ()&lt;UITableViewDelegate,UITableViewDataSource&gt;
+@property (nonatomic, strong) UITableView *tableView;
+@end
+@implementation ViewController
+
+-(UITableView *)tableView{
+    if (!_tableView) {
+        UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        tableView.delegate = self.tableViewDelegate;
+        tableView.dataSource = self.tableViewDataSource;
+        [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@&quot;cell&quot;];
+        [self.view addSubview:tableView];
+        _tableView = self.tableView;
+    }
+    return _tableView;
+}
+
+#pragma mark - TableViewDelegate &amp; Datasource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 3;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;cell&quot; forIndexPath:indexPath];
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44;
+}
+</code></pre><p>我们此处为ViewController寻一个“代理”,新增继承NSObject两个类TableViewDelegate、TableViewDataSource,让他帮忙去实现一大堆的代理方法,.h中配置代理,.m中实现代理,如下:</p>
 <blockquote>
 <p><strong>TableViewDelegate</strong></p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line">@interface TableViewDelegate : NSObject&lt;UITableViewDelegate&gt;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;TableViewDelegate.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation TableViewDelegate</span><br><span class="line">- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath&#123;</span><br><span class="line">    return 1.0f;</span><br><span class="line">&#125;</span><br><span class="line">- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section&#123;</span><br><span class="line">    return 1.0f;</span><br><span class="line">&#125;</span><br><span class="line">- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section&#123;</span><br><span class="line">    return 1.0f;</span><br><span class="line">&#125;</span><br><span class="line">- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section&#123;</span><br><span class="line">    return [UIView new];</span><br><span class="line">&#125;</span><br><span class="line">- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section&#123;</span><br><span class="line">    return [UIView new];</span><br><span class="line">&#125;</span><br><span class="line">- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPat&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<blockquote>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+#import &lt;UIKit/UIKit.h&gt;
+@interface TableViewDelegate : NSObject&lt;UITableViewDelegate&gt;
+
+@end
+
+#import &quot;TableViewDelegate.h&quot;
+
+@implementation TableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 1.0f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 1.0f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 1.0f;
+}
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return [UIView new];
+}
+- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return [UIView new];
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+}
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPat{
+
+}
+@end
+</code></pre><blockquote>
 <p><strong>TableViewDataSource</strong></p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line">@interface TableViewDataSource : NSObject&lt;UITableViewDataSource&gt;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;TableViewDataSource.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation TableViewDataSource</span><br><span class="line"></span><br><span class="line">- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</span><br><span class="line">&#123;</span><br><span class="line">    return 3;</span><br><span class="line">&#125;</span><br><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line">&#123;</span><br><span class="line">    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;cell&quot; forIndexPath:indexPath];</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>最终ViewController中将代理交由这两个类去处理,如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;ViewController.h&quot;</span><br><span class="line">#import &quot;TableViewDelegate.h&quot;</span><br><span class="line">#import &quot;TableViewDataSource.h&quot;</span><br><span class="line">@interface ViewController ()</span><br><span class="line">@property (nonatomic, strong) UITableView *tableView;</span><br><span class="line">@property (nonatomic, strong) TableViewDelegate *tableViewDelegate;</span><br><span class="line">@property (nonatomic, strong) TableViewDataSource *tableViewDataSource;</span><br><span class="line">@end</span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">-(UITableView *)tableView&#123;</span><br><span class="line">    if (!_tableView) &#123;</span><br><span class="line">        UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];</span><br><span class="line">        tableView.delegate = self.tableViewDelegate;</span><br><span class="line">        tableView.dataSource = self.tableViewDataSource;</span><br><span class="line">        [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@&quot;cell&quot;];</span><br><span class="line">        [self.view addSubview:tableView];</span><br><span class="line">        _tableView = self.tableView;</span><br><span class="line">    &#125;</span><br><span class="line">    return _tableView;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(TableViewDataSource *)tableViewDataSource &#123;</span><br><span class="line">    if (!_tableViewDataSource) &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    return _tableViewDataSource;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(TableViewDelegate *)tableViewDelegate&#123;</span><br><span class="line">    if (!_tableViewDelegate) &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    return _tableViewDelegate;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>这样ViewController相对来说是不是会清爽很多呢.当然对于一个简单的列表,直接用老方式去实现即可,不需要大费周章把代理移到别的类中去实现.</p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+#import &lt;UIKit/UIKit.h&gt;
+@interface TableViewDataSource : NSObject&lt;UITableViewDataSource&gt;
+@end
+
+#import &quot;TableViewDataSource.h&quot;
+
+@implementation TableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 3;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;cell&quot; forIndexPath:indexPath];
+    return cell;
+}
+
+@end
+</code></pre><p>最终ViewController中将代理交由这两个类去处理,如下:</p>
+<pre><code>#import &quot;ViewController.h&quot;
+#import &quot;TableViewDelegate.h&quot;
+#import &quot;TableViewDataSource.h&quot;
+@interface ViewController ()
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) TableViewDelegate *tableViewDelegate;
+@property (nonatomic, strong) TableViewDataSource *tableViewDataSource;
+@end
+@implementation ViewController
+
+-(UITableView *)tableView{
+    if (!_tableView) {
+        UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        tableView.delegate = self.tableViewDelegate;
+        tableView.dataSource = self.tableViewDataSource;
+        [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@&quot;cell&quot;];
+        [self.view addSubview:tableView];
+        _tableView = self.tableView;
+    }
+    return _tableView;
+}
+
+-(TableViewDataSource *)tableViewDataSource {
+    if (!_tableViewDataSource) {
+
+    }
+    return _tableViewDataSource;
+}
+
+-(TableViewDelegate *)tableViewDelegate{
+    if (!_tableViewDelegate) {
+
+    }
+    return _tableViewDelegate;
+}
+@end
+</code></pre><p>这样ViewController相对来说是不是会清爽很多呢.当然对于一个简单的列表,直接用老方式去实现即可,不需要大费周章把代理移到别的类中去实现.</p>
 <h2 id="业务逻辑交由Model去处理"><a href="#业务逻辑交由Model去处理" class="headerlink" title="业务逻辑交由Model去处理"></a>业务逻辑交由Model去处理</h2><p>对于modle到底该承载什么,其实我一直有个疑问,model的处理重点就只是把数据解析变成字典然后映射到model的属性上面吗?此处我也不做定论,仁者见仁,智者见智而已. 但是不管怎么去判定,model的确可以帮助ViewController分担很多操作,业务逻辑在一个传统的ViewController中是占有相当大的比重,所以如果不介意, 你可以业务逻辑移动到model里.</p>
 <h2 id="网络请求交由Model去处理"><a href="#网络请求交由Model去处理" class="headerlink" title="网络请求交由Model去处理"></a>网络请求交由Model去处理</h2><p>此处的想法其实和上面的业务逻辑处理是相似的目的,所以项目中可以把网络请求交付给其他的NSObject类去处理貌似也是个不错的尝试,此处就不做代码演示.如果觉得可行可以自己去写写.</p>
 <h2 id="View代码移到View层"><a href="#View代码移到View层" class="headerlink" title="View代码移到View层"></a>View代码移到View层</h2><p>对于平时不太喜欢用xib和故事板的同学,是否时常会写大量的代码去还原一个视图效果,倘若一个稍许复杂视图的实现代码也写在了ViewController中,我想此时ViewController可以轻轻松松的上千行了. 其实不应该在ViewController中去实现比较复杂的视图层次结构,我们应该通过Xib或者View把视图封装到<strong>UIView</strong>的子类中去. 在你的编码生涯中,应该自定义过很多的视图控件,所以这种情况我们处理过很多.</p>
