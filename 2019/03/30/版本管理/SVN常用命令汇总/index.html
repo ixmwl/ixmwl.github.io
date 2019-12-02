@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <link rel="stylesheet" href="/highlight/styles/xcode.css">
+  <script src="/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>SVN常用命令汇总 | 夏末的杂货铺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="版本管理,svn命令,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">夏末的杂货铺</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a href="/" target="_self">
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a href="/archives/" target="_self">
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a href="/categories/" target="_self">
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a href="/tags/" target="_self">
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a href="/friends/" target="_self">
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a href="/about/" target="_self">
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path>
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a href="https://github.com/ixmwl" target="_blank">
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://gitee.com/ixmwl" target="_blank">
+                    码云
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://www.jianshu.com/u/eac0613bd801" target="_blank">
+                    简书
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>SVN常用命令汇总</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2019-03-30
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/版本管理/">
+            版本管理
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="SVN常用命令汇总"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1、集中式管理，管理方式在服务端配置好，客户端只需要同步提交即可，使用方便，操作简单，很容易就可以上手。<br>2、在服务端统一控制好访问权限，利用代码的安全管理。<br>3、所有的代码已服务端为准，代码一致性高。</p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>1、所有操作都需要通过服务端进行同步，这会导致服务器性能要求比较高。如果服务器宕机了就无法提交代码了。<br>2、分支管理不灵活，svn分支是一个完整的目录，且这个目录拥有完整的实际文件，这些操作都是在服务端进行同步的，不是本地化操作，如果要删除分之，也是需要将远程的分支进行删除，这会导致大家都得同步。<br>3、需要联网。如果无法连接到SVN服务器，就无法提交自己的代码，更别说还原、对比等操作了。如果在内网还好，网速比较稳定，同步相对比较快，如果是通过外网同步，有可能就需要同步很久。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>Repository (代码仓库, 保存代码的仓库)<br>Server (服务器, 保存所有版本的代码仓库)<br>Client (客户端, 只保存当前用户的代码仓库)<br>用户名&amp;密码 (访问代码仓库需要使用自己的用户名和密码,从而可以区分出不同人对代码做的修改)</p>
+<h2 id="基操"><a href="#基操" class="headerlink" title="基操"></a>基操</h2><p>checkout (将服务器上面最新的代码下载到本地,”只需要做一次”)<br>update (从服务器更新最新的代码,”每天上班都需要做的事情”)<br>commit (将工作提交到服务器, “每天下班之前事少做一次”)</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h4 id="清除文件夹所有svn"><a href="#清除文件夹所有svn" class="headerlink" title="清除文件夹所有svn"></a>清除文件夹所有svn</h4><blockquote>
+<p>find . -type d -name “.svn”|xargs rm -rf</p>
+</blockquote>
+<h4 id="将文件checkout到本地目录"><a href="#将文件checkout到本地目录" class="headerlink" title="将文件checkout到本地目录"></a>将文件checkout到本地目录</h4><blockquote>
+<p>svn checkout path（path是服务器上的目录）<br>例如：svn checkout svn://192.168.1.1/pro/domain<br>简写：svn co</p>
+</blockquote>
+<h4 id="往版本库中添加新的文件"><a href="#往版本库中添加新的文件" class="headerlink" title="往版本库中添加新的文件"></a>往版本库中添加新的文件</h4><blockquote>
+<p>svn add file<br>例如：svn add test.php(添加test.php)<br>svn add *.php(添加当前目录下所有的php文件)</p>
+</blockquote>
+<h4 id="将改动的文件提交到版本库"><a href="#将改动的文件提交到版本库" class="headerlink" title="将改动的文件提交到版本库"></a>将改动的文件提交到版本库</h4><blockquote>
+<p>svn commit -m “LogMessage“ [-N] [–no-unlock] PATH(如果选择了保持锁，就使用–no-unlock开关)<br>例如：svn commit -m “add test file for my test“ test.php<br>简写：svn ci</p>
+</blockquote>
+<h4 id="加锁-解锁"><a href="#加锁-解锁" class="headerlink" title="加锁/解锁"></a>加锁/解锁</h4><blockquote>
+<p>svn lock -m “LockMessage“ [–force] PATH<br>例如：svn lock -m “lock test file“ test.php<br>svn unlock PATH</p>
+</blockquote>
+<h4 id="更新到某个版本"><a href="#更新到某个版本" class="headerlink" title="更新到某个版本"></a>更新到某个版本</h4><blockquote>
+<p>svn update -r m path<br>svn update 如果后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本。<br>svn update -r 200 test.php(将版本库中的文件test.php还原到版本200)<br>svn update test.php(更新，于版本库同步。如果在提交的时候提示过期的话，是因为冲突，需要先update，修改文件，然后清除svn resolved，最后再提交commit)<br>简写：svn up</p>
+</blockquote>
+<h4 id="查看文件或者目录状态"><a href="#查看文件或者目录状态" class="headerlink" title="查看文件或者目录状态"></a>查看文件或者目录状态</h4><blockquote>
+<p>svn status path（目录下的文件和子目录的状态，正常状态不显示）<br>?：不在svn的控制中；M：内容被修改；C：发生冲突；A：预定加入到版本库；K：被锁定】<br>svn status -v path(显示文件和子目录状态)<br>第一列保持相同，第二列显示工作版本号，第三和第四列显示最后一次修改的版本号和修改人。<br>注：svn status、svn diff和 svn revert这三条命令在没有网络的情况下也可以执行的，原因是svn在本地的.svn中保留了本地版本的原始拷贝。<br>简写：svn st</p>
+</blockquote>
+<h4 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h4><blockquote>
+<p>svn delete path -m “delete test fle“<br>例如：svn delete svn://192.168.1.1/pro/domain/test.php -m “delete test file”<br>或者直接svn delete test.php 然后再svn ci -m ‘delete test file‘，<br>推荐使用这种 简写：svn (del, remove, rm)</p>
+</blockquote>
+<h4 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h4><blockquote>
+<p>svn log path<br>例如：svn log test.php 显示这个文件的所有修改记录，及其版本号的变化</p>
+</blockquote>
+<h4 id="查看文件详细信息"><a href="#查看文件详细信息" class="headerlink" title="查看文件详细信息"></a>查看文件详细信息</h4><blockquote>
+<p>svn info path<br>例如：svn info test.php</p>
+</blockquote>
+<h4 id="比较差异"><a href="#比较差异" class="headerlink" title="比较差异"></a>比较差异</h4><blockquote>
+<p>svn diff path(将修改的文件与基础版本比较)<br>例如：svn diff test.php<br>svn diff -r m:n path(对版本m和版本n比较差异)<br>例如：svn diff -r 200:201 test.php<br>简写：svn di</p>
+</blockquote>
+<h4 id="将两个版本之间的差异合并到当前文件"><a href="#将两个版本之间的差异合并到当前文件" class="headerlink" title="将两个版本之间的差异合并到当前文件"></a>将两个版本之间的差异合并到当前文件</h4><blockquote>
+<p>svn merge -r m:n path</p>
+</blockquote>
+<p>例如：svn merge -r 200:205 test.php（将版本200与205之间的差异合并到当前文件，但是一般都会产生冲突，需要处理一下）</p>
+<h4 id="SVN-帮助"><a href="#SVN-帮助" class="headerlink" title="SVN 帮助"></a>SVN 帮助</h4><blockquote>
+<p>svn help<br>svn help ci</p>
+</blockquote>
+<h4 id="版本库下的文件和目录列表"><a href="#版本库下的文件和目录列表" class="headerlink" title="版本库下的文件和目录列表"></a>版本库下的文件和目录列表</h4><blockquote>
+<p>svn list path<br>简写：svn ls<br>显示path目录下的所有属于版本库的文件和目录</p>
+</blockquote>
+<h4 id="创建纳入版本控制下的新目录"><a href="#创建纳入版本控制下的新目录" class="headerlink" title="创建纳入版本控制下的新目录"></a>创建纳入版本控制下的新目录</h4><blockquote>
+<p>svn mkdir: 创建纳入版本控制下的新目录。<br>用法: 1、mkdir PATH…<br>      2、mkdir URL…</p>
+</blockquote>
+<p> 创建版本控制的目录。<br>1、每一个以工作副本 PATH 指定的目录，都会创建在本地端，并且加入新增调度，以待下一次的提交。<br>2、每个以URL指定的目录，都会透过立即提交于仓库中创建。在这两个情况下，所有的中间目录都必须事先存在</p>
+<h4 id="恢复本地修改"><a href="#恢复本地修改" class="headerlink" title="恢复本地修改"></a>恢复本地修改</h4><blockquote>
+<p>svn revert: 恢复原始未改变的工作副本文件 (恢复大部份的本地修改)。revert:<br>用法: revert PATH…<br>注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复被删除的目录</p>
+</blockquote>
+<h4 id="代码库URL变更"><a href="#代码库URL变更" class="headerlink" title="代码库URL变更"></a>代码库URL变更</h4><blockquote>
+<p>svn switch (sw): 更新工作副本至不同的URL。<br> 用法: 1、switch URL [PATH]<br> switch –relocate FROM TO [PATH…]</p>
+</blockquote>
+<p> 1、更新你的工作副本，映射到一个新的URL，其行为跟“svn update”很像，也会将<br> 服务器上文件与本地文件合并。这是将工作副本对应到同一仓库中某个分支或者标记的<br> 方法。<br> 2、改写工作副本的URL元数据，以反映单纯的URL上的改变。当仓库的根URL变动<br> (比如方案名或是主机名称变动)，但是工作副本仍旧对映到同一仓库的同一目录时使用<br>这个命令更新工作副本与仓库的对应关系。</p>
+<h4 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h4><blockquote>
+<p>svn resolved: 移除工作副本的目录或文件的“冲突”状态。<br>用法: resolved PATH…<br>注意: 本子命令不会依语法来解决冲突或是移除冲突标记；它只是移除冲突的<br>相关文件，然后让 PATH 可以再次提交。</p>
+</blockquote>
+    </div>
+  </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/svn命令/">
+              #svn命令
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2019/03/30/版本管理/Git常用命令汇总/" target="_self">Git常用命令汇总</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2019/04/12/前端/HTML/HTML基础/" target="_self">HTML基础学习</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("EU3pLs6R8jtqeOfcoQXrKyir-gzGzoHsz", "qJ21vb6aSD16W6NcEnBBmpa0");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已运行<span id="time-to-now"></span>
+    <!-- <span class="my-face">(●'◡'●)ﾉ♥</span> -->
+    <br>
+    Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2019, 1, 10).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <link rel="stylesheet" href="/highlight/styles/xcode.css">
+  <script src="/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>HTML基础学习 | 夏末的杂货铺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="前端,Html,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">夏末的杂货铺</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a href="/" target="_self">
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a href="/archives/" target="_self">
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a href="/categories/" target="_self">
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a href="/tags/" target="_self">
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a href="/friends/" target="_self">
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a href="/about/" target="_self">
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path>
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a href="https://github.com/ixmwl" target="_blank">
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://gitee.com/ixmwl" target="_blank">
+                    码云
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://www.jianshu.com/u/eac0613bd801" target="_blank">
+                    简书
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>HTML基础学习</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2019-04-12
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/前端/">
+            前端
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="HTML基础"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <p></p>
+<h2 id="前端工程师是干什么的？"><a href="#前端工程师是干什么的？" class="headerlink" title="前端工程师是干什么的？"></a>前端工程师是干什么的？</h2><blockquote>
+<p>pc页面<br>移动端页面</p>
+<p>web开发=前端开发+后台开发—&gt;web应用（网站）<br>后台：数据<br>前台：负责数据展示+交互效果</p>
+</blockquote>
+<h2 id="需要学习的内容有哪些？"><a href="#需要学习的内容有哪些？" class="headerlink" title="需要学习的内容有哪些？"></a>需要学习的内容有哪些？</h2><blockquote>
+<p>工具部分： ps（处理图片）ide（开发工具）标注工具 5%<br>编程语言： html、css、javascript  95%</p>
+</blockquote>
+<h2 id="html、css、javascript是干什么的？作用是什么？"><a href="#html、css、javascript是干什么的？作用是什么？" class="headerlink" title="html、css、javascript是干什么的？作用是什么？"></a>html、css、javascript是干什么的？作用是什么？</h2><blockquote>
+<p>html：超文本标记语言，搭建网页结构  （修房子–搭建框架结构）<br>css：层叠样式标，修饰html样式 让网页更好看（装修房子）<br>js： 负责页面的交互效果 （用户和页面产生行为）</p>
+</blockquote>
+<h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><blockquote>
+<p>ide（集成开发环境），写代码的工具，推荐hbuilder<br>浏览器：IE（不推荐）Chrome（谷歌 推荐） Safari（苹果）firefox （火狐）</p>
+</blockquote>
+<h2 id="html初识"><a href="#html初识" class="headerlink" title="html初识"></a>html初识</h2><h4 id="html-超文本标记语言"><a href="#html-超文本标记语言" class="headerlink" title="html 超文本标记语言"></a>html 超文本标记语言</h4><blockquote>
+<p>特点：以html开头与结尾 </p>
+</blockquote>
+<h4 id="文档格式"><a href="#文档格式" class="headerlink" title="文档格式"></a>文档格式</h4><p>通常成对出现</p>
+<pre><code>&lt;html&gt;
+      &lt;head&gt;
+          &lt;title&gt;这个网页是我的第一个网页&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+          hello world！！！
+      &lt;/body&gt;
+  &lt;/html&gt;
+</code></pre><h4 id="html元素之间的关系"><a href="#html元素之间的关系" class="headerlink" title="html元素之间的关系"></a>html元素之间的关系</h4><blockquote>
+<p>html元素包括： 开始标签<html> + 元素内容 + 结束标签(</html>)<br>父子关系、兄弟关系、子孙关系、后代关系<br>特点：html元素之间是可以无限嵌套，书写的时候，空格写 </p>
+</blockquote>
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><pre><code>&lt;!-- 中间写注释的内容 --&gt;
+</code></pre><blockquote>
+<p>特点：注释的内容不会被显示到浏览器上<br>br标签 表示换行<br>字符实体：用一些特殊的字符去代替另外一些特殊字符</p>
+</blockquote>
+<h4 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h4><p>要学好html就必须记住html标签的名称和标签的作用</p>
+<table>
+<thead>
+<tr>
+<th>标签名称</th>
+<th>标签作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>html</td>
+<td>包裹所有的其他标签，是html最外层的元素</td>
+</tr>
+<tr>
+<td>head</td>
+<td>文档的头部</td>
+</tr>
+<tr>
+<td>title</td>
+<td>表示网页的标题</td>
+</tr>
+<tr>
+<td>body</td>
+<td>所有的网页内容都放在body中</td>
+</tr>
+<tr>
+<td>div</td>
+<td>表示一个容器或者说一个盒子</td>
+</tr>
+<tr>
+<td>span</td>
+<td>功能和div类似，span可以用来装一小段文字 和div的区别就是 在一行内显示</td>
+</tr>
+<tr>
+<td>h1-h6</td>
+<td>表示标题  数字越大 字体越小</td>
+</tr>
+<tr>
+<td>p</td>
+<td>表示段落标签</td>
+</tr>
+<tr>
+<td>hr</td>
+<td>表示一条水平分割线</td>
+</tr>
+<tr>
+<td>ul li</td>
+<td>表示无序列表</td>
+</tr>
+<tr>
+<td>i/em</td>
+<td>表示斜体</td>
+</tr>
+<tr>
+<td>strong</td>
+<td>表示加粗</td>
+</tr>
+<tr>
+<td>br</td>
+<td>表示换行</td>
+</tr>
+<tr>
+<td>img</td>
+<td>表示图像标签，可以引入图像 属性：特征，在开始标签后面 以  属性名称=“属性值” 这种形式表示给html标签加属性,img标签必须加上 <br>src属性 才能把图像展示出来 <br>alt属性： 当图片没有办法显示的时候用来提示用户的文字 <br>title属性：当鼠标移动到图片的时候，用来提示用户的文字</td>
+</tr>
+<tr>
+<td>a</td>
+<td>表示超链接，可以链接一切资源（包括网址 视频 文字 等等）<br>href属性：  超链接的地址 <br>target属性： _blank 表示新建一个浏览器标签页来显示超链接的内容，不会覆盖原来的网页</td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>html：超文本标记语言，超文本（和纯文本相比功能比较丰富），标记（标签），整个html文档<br>都是由标签组成，<br>如何能够学好html语言：每个html标签的名称和功能，背，和学习英语26个字母一样</p>
+<p>  1 html是什么？html有什么用？<br>  2 如何去使用html？<br>     a. html结构<br>     b. html元素之间的关系<br>     c. 注释、字符实体<br>     d. 常用标签(重点)   标签的名称 标签的功能 h1 p div  img a </p>
+</blockquote>
+    </div>
+  </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/Html/">
+              #Html
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2019/03/30/版本管理/SVN常用命令汇总/" target="_self">SVN常用命令汇总</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2019/04/14/前端/CSS/CSS基础/" target="_self">CSS基础学习</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("EU3pLs6R8jtqeOfcoQXrKyir-gzGzoHsz", "qJ21vb6aSD16W6NcEnBBmpa0");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已运行<span id="time-to-now"></span>
+    <!-- <span class="my-face">(●'◡'●)ﾉ♥</span> -->
+    <br>
+    Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2019, 1, 10).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
