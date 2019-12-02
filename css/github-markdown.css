@@ -436,8 +436,8 @@
   margin: 3rem 0;
   padding: 15px;
   color: #555;
-  border-left: 0.25em solid #555;
-  background: #fdfdfd;
+  border-left: 0.25em solid rgb(24, 163, 54);
+  background: #2fa14b2d;
   border-radius: 3px;
 }
 

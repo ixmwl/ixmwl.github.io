@@ -43,7 +43,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 .hljs-quote,
 .hljs-template-tag,
 .hljs-deletion {
-  color: #880000;
+  color: #1abc9c;
 }
 
 .hljs-title,
@@ -59,14 +59,14 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 .hljs-link,
 .hljs-selector-attr,
 .hljs-selector-pseudo {
-  color: #BC6060;
+  color: #771717;
 }
 
 
 /* Language color: hue: 90; */
 
 .hljs-literal {
-  color: #78A960;
+  color: #547b41;
 }
 
 .hljs-built_in,
