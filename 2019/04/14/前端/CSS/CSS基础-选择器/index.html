@@ -16,7 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="前端,css&amp;选择器,">
+    <meta name="keywords" content="前端,选择器,">
   
 
   <script>
@@ -483,7 +483,43 @@
     &lt;/form&gt;
 &lt;/body&gt;
 </code></pre><p>运行结果，拥有name属性的两个input元素边框被设置成了红色，最后一个并没有。</p>
-<h3 id="伪类和伪元素"><a href="#伪类和伪元素" class="headerlink" title="伪类和伪元素"></a>伪类和伪元素</h3>
+<h3 id="伪类和伪元素"><a href="#伪类和伪元素" class="headerlink" title="伪类和伪元素"></a>伪类和伪元素</h3><p><code>伪类</code>是添加到选择器的关键字，指定要选择的元素的特殊状态。例如，:<code>hover</code> 可被用于在用户将鼠标悬停在按钮上时改变按钮的颜色。语法如下：</p>
+<pre><code>selector:pseudo-class {
+  property: value;
+}
+</code></pre><h4 id="a标签的4种状态"><a href="#a标签的4种状态" class="headerlink" title="a标签的4种状态"></a>a标签的4种状态</h4><blockquote>
+<p><code>link</code>:未访问链接<br><code>hover</code>:鼠标放上状态，鼠标放到某个标签上的时候<br><code>visited</code>:已访问链接，<br><code>active</code>:当前活动链接，点击某个标签没有松鼠标时</p>
+</blockquote>
+<p>CSS允许对于元素的不同状态，定义不同的样式信息。伪类选择器又分为两种：</p>
+<p><code>静态伪类</code>：只能用于超链接<br><code>动态伪类</code>：针对所有标签都适用</p>
+<h4 id="before-amp-after"><a href="#before-amp-after" class="headerlink" title="before&amp;after"></a>before&amp;after</h4><p>这个两个<code>伪元素</code>在真正页面元素内部之前和之后添加新内容</p>
+<pre><code>&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;伪类&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        a:before{
+           content: &#39;点我&#39;;
+        } 
+        a:after{
+            content: &#39;警告&#39;;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form&gt;
+        &lt;a href=&quot;https://www.baidu.com&quot;&gt;百度&lt;/a&gt;
+        &lt;p&gt;百度以下，就知道了！&lt;/p&gt;
+        &lt;a href=&quot;https://www.pgyer.com&quot;&gt;蒲公英分发平台&lt;/a&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+</code></pre><p> 例如上面的代码就是在<code>a</code>标签<code>前后</code>添加了点我和警告 </p>
+<p><strong>「总结」</strong></p>
+<ol>
+<li>伪元素不属于文档，所以js无法操作它</li>
+<li>伪元素属于主元素的一部分，因此点击伪元素触发的是主元素的click事件</li>
+<li><code>优点</code>：减少dom节点、让css帮助解决部分js问题，让问题变得简单</li>
+<li><code>缺点</code>：不利于SEO，无法审查元素，不利于调试</li>
+</ol>
     </div>
   </div>
   
@@ -499,8 +535,8 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/css-选择器/">
-              #css&选择器
+            <a href="/tags/选择器/">
+              #选择器
             </a>
           </span>
           
@@ -525,13 +561,13 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/04/12/前端/HTML/HTML基础/" target="_self">HTML基础学习</a>
+        <a href="/2019/04/14/前端/CSS/CSS基础/" target="_self">CSS基础学习</a>
       </div>
     
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/04/14/前端/CSS/CSS基础/" target="_self">CSS基础学习</a>
+        <a href="/2019/04/14/前端/CSS/CSS基础-定位/" target="_self">CSS基础-定位</a>
         <i class="iconfont icon-next"></i>
       </div>
     

@@ -11,12 +11,12 @@
   
   
   
-  <title>HTML基础学习 | 夏末的杂货铺</title>
+  <title>CSS基础-定位 | 夏末的杂货铺</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="前端,Html,">
+    <meta name="keywords" content="前端,定位,">
   
 
   <script>
@@ -203,12 +203,12 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>HTML基础学习</span>
+    <span>CSS基础-定位</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-04-12
+      2019-04-14
     </span>
     
       <span>
@@ -220,7 +220,7 @@
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="HTML基础"></span>
+        浏览 : <span class="article-timer" data-identity="CSS基础-定位"></span>
       </span>
     
   </div>
@@ -230,148 +230,10 @@
   <div class="article-content">
     <div class="markdown-body">
       <p></p>
-<h2 id="前端工程师是干什么的？"><a href="#前端工程师是干什么的？" class="headerlink" title="前端工程师是干什么的？"></a>前端工程师是干什么的？</h2><blockquote>
-<p>pc页面<br>移动端页面</p>
-<p>web开发=前端开发+后台开发—&gt;web应用（网站）<br>后台：数据<br>前台：负责数据展示+交互效果</p>
-</blockquote>
-<h2 id="需要学习的内容有哪些？"><a href="#需要学习的内容有哪些？" class="headerlink" title="需要学习的内容有哪些？"></a>需要学习的内容有哪些？</h2><blockquote>
-<p>工具部分： ps（处理图片）ide（开发工具）标注工具 5%<br>编程语言： html、css、javascript  95%</p>
-</blockquote>
-<h2 id="html、css、javascript是干什么的？作用是什么？"><a href="#html、css、javascript是干什么的？作用是什么？" class="headerlink" title="html、css、javascript是干什么的？作用是什么？"></a>html、css、javascript是干什么的？作用是什么？</h2><blockquote>
-<p>html：超文本标记语言，搭建网页结构  （修房子–搭建框架结构）<br>css：层叠样式标，修饰html样式 让网页更好看（装修房子）<br>js： 负责页面的交互效果 （用户和页面产生行为）</p>
-</blockquote>
-<h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><blockquote>
-<p>ide（集成开发环境），写代码的工具，推荐hbuilder<br>浏览器：IE（不推荐）Chrome（谷歌 推荐） Safari（苹果）firefox （火狐）</p>
-</blockquote>
-<h2 id="html初识"><a href="#html初识" class="headerlink" title="html初识"></a>html初识</h2><h4 id="html-超文本标记语言"><a href="#html-超文本标记语言" class="headerlink" title="html 超文本标记语言"></a>html 超文本标记语言</h4><blockquote>
-<p>特点：以html开头与结尾 </p>
-</blockquote>
-<h4 id="文档格式"><a href="#文档格式" class="headerlink" title="文档格式"></a>文档格式</h4><p>通常成对出现</p>
-<pre><code>&lt;html&gt;
-      &lt;head&gt;
-          &lt;title&gt;这个网页是我的第一个网页&lt;/title&gt;
-      &lt;/head&gt;
-      &lt;body&gt;
-          hello world！！！
-      &lt;/body&gt;
-  &lt;/html&gt;
-</code></pre><h4 id="html元素之间的关系"><a href="#html元素之间的关系" class="headerlink" title="html元素之间的关系"></a>html元素之间的关系</h4><blockquote>
-<p>html元素包括： 开始标签<html> + 元素内容 + 结束标签(</html>)<br>父子关系、兄弟关系、子孙关系、后代关系<br>特点：html元素之间是可以无限嵌套，书写的时候，空格写 </p>
-</blockquote>
-<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><pre><code>&lt;!-- 中间写注释的内容 --&gt;
-</code></pre><blockquote>
-<p>特点：注释的内容不会被显示到浏览器上<br>br标签 表示换行<br>字符实体：用一些特殊的字符去代替另外一些特殊字符</p>
-</blockquote>
-<h4 id="字符实体"><a href="#字符实体" class="headerlink" title="字符实体"></a>字符实体</h4><p>Html文档中有些字符具有特殊含义，很明显的尖括号&lt;和&gt;这两个字符。有时候想用到这些字符，但是又不想被当作Html解析处理。因此有了字符实体，也就是Html实体。实体是浏览器用来代替特殊字符的代码</p>
-<table>
-<thead>
-<tr>
-<th>字符</th>
-<th>实体名称</th>
-<th>实体编码</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td><code>&amp;nbsp;</code></td>
-<td><code>&amp;#160;</code></td>
-<td>空格</td>
-</tr>
-<tr>
-<td>&lt;</td>
-<td><code>&amp;lt;</code></td>
-<td><code>&amp;#60;</code></td>
-<td>小于号</td>
-</tr>
-<tr>
-<td>&gt;</td>
-<td><code>&amp;gt;</code></td>
-<td><code>&amp;#62;</code></td>
-<td>大于号</td>
-</tr>
-<tr>
-<td>&amp;</td>
-<td><code>&amp;amp;</code></td>
-<td><code>&amp;#38;</code></td>
-<td>和好</td>
-</tr>
-<tr>
-<td>“</td>
-<td><code>&amp;quot;</code></td>
-<td><code>&amp;#34;</code></td>
-<td>引号</td>
-</tr>
-<tr>
-<td>‘</td>
-<td><code>&amp;apos;(IE不支持)</code></td>
-<td><code>&amp;#39;</code></td>
-<td>撇号</td>
-</tr>
-<tr>
-<td>¢</td>
-<td><code>&amp;cent;</code></td>
-<td><code>&amp;#162;</code></td>
-<td>分</td>
-</tr>
-<tr>
-<td>£</td>
-<td><code>&amp;pound;</code></td>
-<td><code>&amp;#163;</code></td>
-<td>镑</td>
-</tr>
-<tr>
-<td>¥</td>
-<td><code>&amp;yen;</code></td>
-<td><code>&amp;#165;</code></td>
-<td>日圆</td>
-</tr>
-<tr>
-<td>€</td>
-<td><code>&amp;euro;</code></td>
-<td><code>&amp;#8364;</code></td>
-<td>欧元</td>
-</tr>
-<tr>
-<td>§</td>
-<td><code>&amp;sect;</code></td>
-<td><code>&amp;#167;</code></td>
-<td>小节</td>
-</tr>
-<tr>
-<td>©</td>
-<td><code>&amp;copy;</code></td>
-<td><code>&amp;#169;</code></td>
-<td>版权</td>
-</tr>
-<tr>
-<td>®</td>
-<td><code>&amp;reg;</code></td>
-<td><code>&amp;#174;</code></td>
-<td>注册商标</td>
-</tr>
-<tr>
-<td>™</td>
-<td><code>&amp;trade;</code></td>
-<td><code>&amp;#8482</code></td>
-<td>商标</td>
-</tr>
-<tr>
-<td>×</td>
-<td><code>&amp;times;</code></td>
-<td><code>&amp;#215</code></td>
-<td>乘号</td>
-</tr>
-<tr>
-<td>÷</td>
-<td><code>&amp;divide;</code></td>
-<td><code>&amp;#247</code></td>
-<td>除号</td>
-</tr>
-</tbody>
-</table>
-<h4 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h4><p>要学好html就必须记住html标签的名称和标签的作用</p>
+<h2 id="选择器是什么？"><a href="#选择器是什么？" class="headerlink" title="选择器是什么？"></a>选择器是什么？</h2><p>每一条css样式定义由两部分组成，形式如下： </p>
+<pre><code>选择器{样式}
+</code></pre><p>在{}之前的部分就是“选择器”。 “选择器”指明了{}中的“样式”的作用对象，也就是“样式”作用于网页中的哪些元素</p>
+<h2 id="基础选择器"><a href="#基础选择器" class="headerlink" title="基础选择器"></a>基础选择器</h2><h3 id="标签选择器"><a href="#标签选择器" class="headerlink" title="标签选择器"></a>标签选择器</h3><p>之前html介绍中有总结一个常用的标签表格，此处再写一遍，加深下记忆</p>
 <table>
 <thead>
 <tr>
@@ -442,18 +304,222 @@
 </tr>
 </tbody>
 </table>
-<p>上述标签中关于img标签需要另外说两句的是路径问题：<br><strong>绝对路径</strong>：在硬盘上的具体位置，例如：D:\文件夹1\文件夹2\image.png<br><strong>相对路径</strong>：相对于当前的html文档来说，image的具体位置可以细分为以下几种</p>
+<p>此处的标签选择器要用到的就是上面表格中展示的标签了，所以根据css样式定义会有如下例子：</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;css&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        p {
+            font-size: 14px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+   &lt;p&gt;css&lt;/p&gt;
+&lt;/body&gt;
+</code></pre><p>在head的样式中<code>p</code>就是标签，这种设置会针对全局的<code>p</code>标签，如果其他标签未设置样式则都会沿用这个标签选择器的样式</p>
+<p><strong>「总结」</strong></p>
 <blockquote>
 <ol>
-<li>如果图片在html文件的上级，用<code>../image.png</code>表示，如果不止一级，可以用多<code>../</code></li>
-<li>如果图片和html文件同级，用<code>./image.png</code>表示，或者直接<code>image.png</code>表示</li>
-<li>如果图片在html文件的下级，就根据文件夹去找即可</li>
+<li>所有的标签，都可以是选择器。比如<code>ul</code>、<code>li</code>、<code>label</code>、<code>dt</code>、<code>dl</code>、<code>input</code>、<code>div</code>等。</li>
+<li>无论这个标签藏的多深，一定能够被选择上。</li>
+<li>选择的所有，而不是一个。</li>
 </ol>
 </blockquote>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>html：超文本标记语言，超文本（和纯文本相比功能比较丰富），标记（标签），整个html文档<br>都是由标签组成，<br>如何能够学好html语言：每个html标签的名称和功能，背，和学习英语26个字母一样</p>
-<p>  1 html是什么？html有什么用？<br>  2 如何去使用html？<br>     a. html结构<br>     b. html元素之间的关系<br>     c. 注释、字符实体<br>     d. 常用标签(重点)   标签的名称 标签的功能 h1 p div  img a </p>
+<h3 id="ID选择器"><a href="#ID选择器" class="headerlink" title="ID选择器"></a>ID选择器</h3><p>ID选择器记住用<code>#</code>来定义，而且是针对某一个特定的标签来使用，只能使用一次，不能重复。例如：</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        #csstitle {
+            border: 3px dashed green;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+</code></pre><p>然后在<code>body</code>中如果需要用到此样式，直接将这个<code>id</code>赋给标签即可</p>
+<pre><code>&lt;body&gt;
+    &lt;p id=&quot;csstitle&quot;&gt;css&lt;/p&gt;
+&lt;/body&gt;
+</code></pre><p><strong>「总结」</strong><br>任何的HTML标签都可以有<code>id</code>属性。表示这个标签的名字。这个标签的名字，可以任取，但是：</p>
+<blockquote>
+<ol>
+<li>只能有字母、数字、下划线。</li>
+<li>必须以字母开头。</li>
+<li>不能和标签同名。比如<code>id</code>不能叫做<code>body</code>、<code>img</code>、<code>a</code>。</li>
+<li>大小写严格区分，也就是说<code>aa</code>,和<code>AA</code>是两个不同的ID</li>
+</ol>
 </blockquote>
+<p>另外，特别强调的是：HTML页面，不能出现相同的id，哪怕他们不是一个类型。比如页面上有一个<code>id</code>为<code>title</code>的<code>p</code>，一个<code>id</code>为<code>title</code>的<code>div</code>，是非法的！</p>
+<p>一个标签可以被多个选择器选择，比如上面已经讲到了标签选择器和ID选择器。那么我们可以同时让标签选择器和id选择器作用于同一个标签。例如：</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        p {
+            font-size: 40px;
+        }
+
+        #csstitle {
+            border: 3px dashed green;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;&gt;
+
+&lt;body&gt;
+    &lt;p id=&quot;csstitle&quot;&gt;css&lt;/p&gt;
+&lt;/body&gt;
+</code></pre><p>如上所述，标签选择器和ID选择器都作用于<code>p</code>标签上</p>
+<h3 id="类选择器"><a href="#类选择器" class="headerlink" title="类选择器"></a>类选择器</h3><p><code>css</code>中用<code>.</code>来定义类选择器,和id非常相似，任何的标签都可以携带<code>id</code>属性和<code>class</code>属性,可以灵活的作用于你所想要的所有标签上。</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        .sub-title{
+            height: 100px;
+            background-color: bisque;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+</code></pre><p>根据每个标签都有<code>class</code>属性，那么我们可以在别处使用<code>class</code>来引用这个样式</p>
+<pre><code>&lt;body&gt;
+    &lt;p class=&quot;sub-title&quot;&gt;css&lt;/p&gt;
+&lt;/body&gt;
+</code></pre><blockquote>
+<ol>
+<li>类选择器可以被多种标签使用</li>
+<li>同一个标签可以使用多个类选择器，用空格分开即可，如 <code>&lt;h class=&quot;classone  classtwo&quot;&gt;我是一个标题啊&lt;/h&gt;</code></li>
+</ol>
+</blockquote>
+<p><strong>「总结」</strong><br>类选择器的使用能够决定一个人对于css使用的水平，因此关于<code>class</code>选择器有以下需要注意：</p>
+<blockquote>
+<ol>
+<li>尽可能标签要多携带几个类，共同完成这个标签的样式。不要试图一个类完成这个标签的所有样式</li>
+<li>每个类尽可能的小，以便其他地方可以使用，实现<code>公共</code>的作用</li>
+<li>具体<code>css</code>编码中尽量使用<code>class</code>选择器，因为id感觉在js中用的更多</li>
+</ol>
+</blockquote>
+<h3 id="通配选择器"><a href="#通配选择器" class="headerlink" title="通配选择器"></a>通配选择器</h3><p>通配选择器使用<code>*</code>定义，单独使用时，这个选择器可以与文档中的任何元素匹配，就像一个通配符。<br>虽然通配选择器的功能强大，但是出于效率考虑，很少有人使用它。所以暂时就这样，后续再详细去了解。</p>
+<h2 id="高级选择器"><a href="#高级选择器" class="headerlink" title="高级选择器"></a>高级选择器</h2><h3 id="相邻选择器"><a href="#相邻选择器" class="headerlink" title="相邻选择器"></a>相邻选择器</h3><p>相邻选择器可以选择紧跟其后的相邻元素，注意：相邻选择器用<code>+</code>来定义连接</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;相邻选择器&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        h1+div{
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;相邻选择器测试&lt;/h1&gt;
+    &lt;div id=&quot;box1&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+</code></pre><h3 id="多元素选择器"><a href="#多元素选择器" class="headerlink" title="多元素选择器"></a>多元素选择器</h3><p>当几个元素有共同属性的时候，可以使用多元素选择器，也就是同时为多个元素设置样式，用<code>,</code>逗号隔开</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;多元素选择器&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        h1,h2,h3,h4,p{
+            background-color: red;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+</code></pre><h3 id="后代选择器"><a href="#后代选择器" class="headerlink" title="后代选择器"></a>后代选择器</h3><p>后代选择器作用于父元素下的所有子元素，用<code>空格</code>隔开</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;后代选择器&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        #box p{
+            background-color: red;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div id=&quot;box&quot;&gt;
+        &lt;p&gt;后代选择器&lt;/p&gt;
+        &lt;p&gt;这是一个p标签&lt;/p&gt;
+        &lt;div id=&quot;box1&quot;&gt;
+            &lt;p&gt;这是另一个div下的p 标签&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+</code></pre><p>如上可以把<code>id</code>为<code>box</code>的<code>div</code>下的所有<code>p</code>标签背景设置为红色，包括<code>id</code>为<code>box1</code>的<code>div</code>下的<code>p</code>标签。</p>
+<p><strong>「总结」</strong></p>
+<blockquote>
+<p>两个标签不一定是连续紧挨着的，只要保持一个后代的关联即可。也就是说，选择的是后代，不一定是子代，也可能是孙代。</p>
+</blockquote>
+<h3 id="子元素选择器"><a href="#子元素选择器" class="headerlink" title="子元素选择器"></a>子元素选择器</h3><p>子元素选择器作用于父元素的子元素，子元素选择器与后代选择器的区别在于：<strong>后者可以作用于子孙元素，但是前者只能作用于子元素，不能跨代</strong>。用<code>&gt;</code>来定义，例子还是用上面后代选择器的例子稍作修改，可以类比看下区别：</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;后代选择器&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        #box&gt;p{
+            background-color: red;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div id=&quot;box&quot;&gt;
+        &lt;p&gt;后代选择器&lt;/p&gt;
+        &lt;p&gt;这是一个p标签&lt;/p&gt;
+        &lt;div id=&quot;box1&quot;&gt;
+            &lt;p&gt;这是另一个div下的p 标签&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+</code></pre><p>此作用结果就是id为box的子代p标签背景都变成红色，但是id为box1的div中的p孙代标签背景是没有被设置的。</p>
+<h3 id="属性选择器"><a href="#属性选择器" class="headerlink" title="属性选择器"></a>属性选择器</h3><p><code>E[attr]</code>匹配所有具有<code>attr</code>属性的<code>E</code>元素，不考虑他的值，例如：<code>input[name]</code>,只要有<code>name</code>属性的<code>input</code>元素都会被选中。</p>
+<pre><code>&lt;head&gt;
+    &lt;title&gt;后代选择器&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        input[name]{
+            border: red solid 1px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;form&gt;
+        &lt;input type=&quot;text&quot; name=&quot;input1&quot;&gt;
+        &lt;input type=&quot;text&quot; name=&quot;input2&quot;&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+</code></pre><p>运行结果，拥有name属性的两个input元素边框被设置成了红色，最后一个并没有。</p>
+<h3 id="伪类和伪元素"><a href="#伪类和伪元素" class="headerlink" title="伪类和伪元素"></a>伪类和伪元素</h3><p><code>伪类</code>是添加到选择器的关键字，指定要选择的元素的特殊状态。例如，:<code>hover</code> 可被用于在用户将鼠标悬停在按钮上时改变按钮的颜色。语法如下：</p>
+<pre><code>selector:pseudo-class {
+  property: value;
+}
+</code></pre><h4 id="a标签的4种状态"><a href="#a标签的4种状态" class="headerlink" title="a标签的4种状态"></a>a标签的4种状态</h4><blockquote>
+<p><code>link</code>:未访问链接<br><code>hover</code>:鼠标放上状态，鼠标放到某个标签上的时候<br><code>visited</code>:已访问链接，<br><code>active</code>:当前活动链接，点击某个标签没有松鼠标时</p>
+</blockquote>
+<p>CSS允许对于元素的不同状态，定义不同的样式信息。伪类选择器又分为两种：</p>
+<p><code>静态伪类</code>：只能用于超链接<br><code>动态伪类</code>：针对所有标签都适用</p>
+<h4 id="before-amp-after"><a href="#before-amp-after" class="headerlink" title="before&amp;after"></a>before&amp;after</h4><p>这个两个<code>伪元素</code>在真正页面元素内部之前和之后添加新内容</p>
+<pre><code>&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;伪类&lt;/title&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        a:before{
+           content: &#39;点我&#39;;
+        } 
+        a:after{
+            content: &#39;警告&#39;;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form&gt;
+        &lt;a href=&quot;https://www.baidu.com&quot;&gt;百度&lt;/a&gt;
+        &lt;p&gt;百度以下，就知道了！&lt;/p&gt;
+        &lt;a href=&quot;https://www.pgyer.com&quot;&gt;蒲公英分发平台&lt;/a&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+</code></pre><p> 例如上面的代码就是在<code>a</code>标签<code>前后</code>添加了点我和警告 </p>
+<p><strong>「总结」</strong></p>
+<ol>
+<li>伪元素不属于文档，所以js无法操作它</li>
+<li>伪元素属于主元素的一部分，因此点击伪元素触发的是主元素的click事件</li>
+<li><code>优点</code>：减少dom节点、让css帮助解决部分js问题，让问题变得简单</li>
+<li><code>缺点</code>：不利于SEO，无法审查元素，不利于调试</li>
+</ol>
     </div>
   </div>
   
@@ -469,8 +535,8 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/Html/">
-              #Html
+            <a href="/tags/定位/">
+              #定位
             </a>
           </span>
           
@@ -495,13 +561,13 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/03/30/版本管理/SVN常用命令汇总/" target="_self">SVN常用命令汇总</a>
+        <a href="/2019/04/14/前端/CSS/CSS基础-选择器/" target="_self">CSS基础--选择器</a>
       </div>
     
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/04/14/前端/CSS/CSS基础/" target="_self">CSS基础学习</a>
+        <a href="/2019/05/10/前端/JS/JavaScript基础--初识/" target="_self">JavaScript基础--初识</a>
         <i class="iconfont icon-next"></i>
       </div>
     
