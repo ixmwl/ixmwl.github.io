@@ -11,12 +11,12 @@
   
   
   
-  <title>CSS基础-定位 | 夏末的杂货铺</title>
+  <title>CSS基础-布局&amp;定位 | 夏末的杂货铺</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="前端,定位,">
+    <meta name="keywords" content="前端,布局&amp;定位,">
   
 
   <script>
@@ -203,7 +203,7 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>CSS基础-定位</span>
+    <span>CSS基础-布局&定位</span>
   </h1>
   <div class="article-top-meta">
     <span>
@@ -230,7 +230,15 @@
   <div class="article-content">
     <div class="markdown-body">
       <p></p>
-<h2 id="布局是什么？"><a href="#布局是什么？" class="headerlink" title="布局是什么？"></a>布局是什么？</h2>
+<h2 id="布局是什么？"><a href="#布局是什么？" class="headerlink" title="布局是什么？"></a>布局是什么？</h2><p>CSS布局就是将不同的元素按照一定的规则放置在页面上、窗口上的不同位置，因此经常会用到一些内容、填充、边框、边界等属性。CSS页面布局技术允许我们拾取网页中的元素，并且控制它们相对正常布局流、周边元素、父容器或者主视口/窗口的位置。关于页面窗口，我们可以把它当作一个盒子，我们的布局就可以理解为我们需要把不同的区块放置在这个盒子的不同位置，此处简称盒子模型。</p>
+<h2 id="布局常见属性"><a href="#布局常见属性" class="headerlink" title="布局常见属性"></a>布局常见属性</h2><p>关于布局中我们经常见到的两个属性就是：<code>margin</code>和<code>padding</code>，两者都是边距的含义，关键问题得明白是什么相对什么的边距，<code>padding</code>是控件的内容相对控件的边缘的边距，<code>margin</code>是控件边缘相对父空间的边距．具体的区别盗用别人的图解释下：</p>
+<p><center class="half"><br>    <img src="https://github.com/ixmwl/BlogResource/blob/master/%E5%89%8D%E7%AB%AF/%E8%BE%B9%E8%B7%9D1.jpg?raw=true" width="300"></center></p>
+<h3 id="margin"><a href="#margin" class="headerlink" title="margin"></a>margin</h3><p><code>margin</code>在一个声明中设置所有外边距的属性，属性可以有<code>[1～4]</code>个不等,不同个数所代表的意义也不一样。</p>
+<blockquote>
+<p>四个值：<code>margin:10px 5px 7px 20px</code> 顺序是（<code>上、左、下、右</code>）<br>三个值：<code>margin:10px 15px 20px</code> 顺序是（<code>上、左右、下</code>）<br>两个值：<code>margin:10px 20px</code>  顺序是（<code>上下、左右</code>）<br>一个值：<code>margin:10px</code>  代表四个值都是<code>10px</code></p>
+</blockquote>
+<h3 id="padding"><a href="#padding" class="headerlink" title="padding"></a>padding</h3><p><code>padding</code>在一个声明中可以设置所有内边距的属性，格式与<code>margin</code>顺序一致</p>
+<h2 id="浮动"><a href="#浮动" class="headerlink" title="浮动"></a>浮动</h2><h2 id="BFC"><a href="#BFC" class="headerlink" title="BFC"></a>BFC</h2><h2 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h2><h3 id="relative"><a href="#relative" class="headerlink" title="relative"></a>relative</h3><h3 id="absolute"><a href="#absolute" class="headerlink" title="absolute"></a>absolute</h3><h3 id="fixed"><a href="#fixed" class="headerlink" title="fixed"></a>fixed</h3>
     </div>
   </div>
   
@@ -246,8 +254,8 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/定位/">
-              #定位
+            <a href="/tags/布局-定位/">
+              #布局&定位
             </a>
           </span>
           
@@ -272,7 +280,7 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/04/14/前端/CSS/CSS基础/" target="_self">CSS基础学习</a>
+        <a href="/2019/04/14/前端/CSS/CSS基础-选择器/" target="_self">CSS基础--选择器</a>
       </div>
     
     

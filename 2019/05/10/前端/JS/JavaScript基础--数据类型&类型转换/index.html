@@ -230,7 +230,7 @@
   <div class="article-content">
     <div class="markdown-body">
       <p></p>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="Number-数字类型"><a href="#Number-数字类型" class="headerlink" title="Number-数字类型"></a>Number-数字类型</h3><p>在其他编程语言中，经常会有整型、浮点型的说法，也就是区分是否带小数点的数字，而在js中没有严格区分，也就意味着15 === 15.0</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="Number-数字类型"><a href="#Number-数字类型" class="headerlink" title="Number-数字类型"></a>Number-数字类型</h3><p>在其他编程语言中，经常会有整型、浮点型的说法，也就是区分是否带小数点的数字，而在<code>js</code>中没有严格区分，也就意味着<code>15 === 15.0</code></p>
 <pre><code>console.log(15 === 15.0);//打印true
 </code></pre><p>而且需要注意的是，浮点型在参加运算的时候，可能并不是很精确，比如</p>
 <pre><code>console.log(1-0.7); // 打印0.3000000000000000004
@@ -241,13 +241,13 @@ console.log(1-0.9); // 打印0.0999999999999999998
 <p>字符串类型特点：</p>
 <ol>
 <li>单引号不可直接嵌套单引号、同理双引号也一样，但是单引号和双引号是可以相互嵌套的</li>
-<li>字符串有长度属性（这个oc\java里也有长度属性）</li>
-<li>字符串包含0个或者多个字符，如果引号内不写则代表空字符串</li>
+<li>字符串有长度属性（这个<code>oc</code>、<code>java</code>里也有长度属性）</li>
+<li>字符串包含<code>0</code>个或者多个字符，如果引号内不写则代表空字符串</li>
 </ol>
 </blockquote>
-<h3 id="Boolean-布尔类型"><a href="#Boolean-布尔类型" class="headerlink" title="Boolean-布尔类型"></a>Boolean-布尔类型</h3><p>同oc、java等语言，js也存在布尔类型，代指真假、是否，关键字是true和false</p>
-<h3 id="null"><a href="#null" class="headerlink" title="null"></a>null</h3><p>一个表明null值的特殊关键字。之前说过js是区分大小写的，所以null,Null和NULL或者其他变量意义是不一样的。null通常表示此处没有对象即该处不应该有值。</p>
-<h3 id="undefined"><a href="#undefined" class="headerlink" title="undefined"></a>undefined</h3><p>表示变量未定义时的属性，可以理解为未定义或者缺少值，即此处应该有值但没给<br>上面说到打印的时候提过，未定义的变量打印会是undefined</p>
+<h3 id="Boolean-布尔类型"><a href="#Boolean-布尔类型" class="headerlink" title="Boolean-布尔类型"></a>Boolean-布尔类型</h3><p>同<code>oc</code>、<code>java</code>等语言，<code>js</code>也存在布尔类型，代指真假、是否，关键字是<code>true</code>和<code>false</code></p>
+<h3 id="null"><a href="#null" class="headerlink" title="null"></a>null</h3><p>一个表明<code>null</code>值的特殊关键字。之前说过js是区分大小写的，所以<code>null</code>,<code>Null</code>和<code>NULL</code>或者其他变量意义是不一样的。<code>null</code>通常表示此处没有对象即该处不应该有值。</p>
+<h3 id="undefined"><a href="#undefined" class="headerlink" title="undefined"></a>undefined</h3><p>表示变量未定义时的属性，可以理解为未定义或者缺少值，即此处应该有值但没给<br>上面说到打印的时候提过，未定义的变量打印会是<code>undefined</code></p>
 <h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><h3 id="强制转换"><a href="#强制转换" class="headerlink" title="强制转换"></a>强制转换</h3><p>强制类型转换就是使用固定的方法强制把一种类型的转换成另一种类型</p>
 <h4 id="强制转换成数字类型"><a href="#强制转换成数字类型" class="headerlink" title="强制转换成数字类型"></a>强制转换成数字类型</h4><blockquote>
 <p>纯字符串数字</p>
@@ -278,25 +278,25 @@ console.log(a);//输出NaN 表示不是一个数字
 <ol>
 <li>如果变量值为字符串数字，直接转成整数</li>
 <li>如果变量值既有数字又有字符串，以数字字符串开头，那么转换时会把前面的字符串数字转成整数并舍去后面的字符串</li>
-<li>如果变量值既有数字又有字符串，不以数字字符串开头，那么转换成NaN，表示转换结果不为数字</li>
+<li>如果变量值既有数字又有字符串，不以数字字符串开头，那么转换成<code>NaN</code>，表示转换结果不为数字</li>
 <li>如果是带小数点的纯字符串数字，只会保留小数前的转成整数，其实此处可以理解为第2点</li>
 </ol>
 </blockquote>
-<h4 id="强制转换成字符类型"><a href="#强制转换成字符类型" class="headerlink" title="强制转换成字符类型"></a>强制转换成字符类型</h4><p>强制转换成字符类型，就比较简单，记住String关键字即可</p>
+<h4 id="强制转换成字符类型"><a href="#强制转换成字符类型" class="headerlink" title="强制转换成字符类型"></a>强制转换成字符类型</h4><p>强制转换成字符类型，就比较简单，记住<code>String</code>关键字即可</p>
 <pre><code>var a = 12;
 a = String(a);
 console.log(typeof a);//String
-</code></pre><h4 id="强制转换成布尔类型"><a href="#强制转换成布尔类型" class="headerlink" title="强制转换成布尔类型"></a>强制转换成布尔类型</h4><p>记住真假值即可，因为大多数情况下都是true，只有少数为false</p>
+</code></pre><h4 id="强制转换成布尔类型"><a href="#强制转换成布尔类型" class="headerlink" title="强制转换成布尔类型"></a>强制转换成布尔类型</h4><p>记住真假值即可，因为大多数情况下都是<code>true</code>，只有少数为<code>false</code></p>
 <pre><code>var a = 12;
 var b = 0;
 a = Boolean(a);//true
 b = Boolean(b);//false 
-</code></pre><h3 id="自动转换"><a href="#自动转换" class="headerlink" title="自动转换"></a>自动转换</h3><p>在js运行过程中，会根据上下文语义，自动将类型转换成统一类型进行运算，例如：</p>
+</code></pre><h3 id="自动转换"><a href="#自动转换" class="headerlink" title="自动转换"></a>自动转换</h3><p>在<code>js</code>运行过程中，会根据上下文语义，自动将类型转换成统一类型进行运算，例如：</p>
 <pre><code>var a = &quot;5&quot;;
 var b = 4;
 var c = a-b;
 console.log(c);//输出1
-</code></pre><p>可见此处根据减法语义，将a转换成number类型与b进行减法操作。</p>
+</code></pre><p>可见此处根据减法语义，将<code>a</code>转换成<code>number</code>类型与<code>b</code>进行减法操作。</p>
     </div>
   </div>
   
