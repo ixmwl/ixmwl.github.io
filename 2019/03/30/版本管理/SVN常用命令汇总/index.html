@@ -231,64 +231,74 @@
     <div class="markdown-body">
       <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1、集中式管理，管理方式在服务端配置好，客户端只需要同步提交即可，使用方便，操作简单，很容易就可以上手。<br>2、在服务端统一控制好访问权限，利用代码的安全管理。<br>3、所有的代码已服务端为准，代码一致性高。</p>
 <h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>1、所有操作都需要通过服务端进行同步，这会导致服务器性能要求比较高。如果服务器宕机了就无法提交代码了。<br>2、分支管理不灵活，svn分支是一个完整的目录，且这个目录拥有完整的实际文件，这些操作都是在服务端进行同步的，不是本地化操作，如果要删除分之，也是需要将远程的分支进行删除，这会导致大家都得同步。<br>3、需要联网。如果无法连接到SVN服务器，就无法提交自己的代码，更别说还原、对比等操作了。如果在内网还好，网速比较稳定，同步相对比较快，如果是通过外网同步，有可能就需要同步很久。</p>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>Repository (代码仓库, 保存代码的仓库)<br>Server (服务器, 保存所有版本的代码仓库)<br>Client (客户端, 只保存当前用户的代码仓库)<br>用户名&amp;密码 (访问代码仓库需要使用自己的用户名和密码,从而可以区分出不同人对代码做的修改)</p>
-<h2 id="基操"><a href="#基操" class="headerlink" title="基操"></a>基操</h2><p>checkout (将服务器上面最新的代码下载到本地,”只需要做一次”)<br>update (从服务器更新最新的代码,”每天上班都需要做的事情”)<br>commit (将工作提交到服务器, “每天下班之前事少做一次”)</p>
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h4 id="清除文件夹所有svn"><a href="#清除文件夹所有svn" class="headerlink" title="清除文件夹所有svn"></a>清除文件夹所有svn</h4><blockquote>
-<p>find . -type d -name “.svn”|xargs rm -rf</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><code>Repository</code> (代码仓库, 保存代码的仓库)<br><code>Server</code> (服务器, 保存所有版本的代码仓库)<br><code>Client</code> (客户端, 只保存当前用户的代码仓库)<br>用户名&amp;密码 (访问代码仓库需要使用自己的用户名和密码,从而可以区分出不同人对代码做的修改)</p>
+<h2 id="基操"><a href="#基操" class="headerlink" title="基操"></a>基操</h2><p><code>checkout</code> (将服务器上面最新的代码下载到本地,”只需要做一次”)<br><code>update</code> (从服务器更新最新的代码,”每天上班都需要做的事情”)<br><code>commit</code> (将工作提交到服务器, “每天下班之前事少做一次”)</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h4 id="清除文件夹所有svn"><a href="#清除文件夹所有svn" class="headerlink" title="清除文件夹所有svn"></a>清除文件夹所有svn</h4><pre><code>find . -type d -name &quot;.svn&quot;|xargs rm -rf
+</code></pre><h4 id="将文件checkout到本地目录"><a href="#将文件checkout到本地目录" class="headerlink" title="将文件checkout到本地目录"></a>将文件checkout到本地目录</h4><pre><code>svn checkout path（path是服务器上的目录）
+</code></pre><blockquote>
+<p>例如：svn checkout svn://192.168.1.1/pro/domain<br>简写：svn co</p>
 </blockquote>
-<h4 id="将文件checkout到本地目录"><a href="#将文件checkout到本地目录" class="headerlink" title="将文件checkout到本地目录"></a>将文件checkout到本地目录</h4><blockquote>
-<p>svn checkout path（path是服务器上的目录）<br>例如：svn checkout svn://192.168.1.1/pro/domain<br>简写：svn co</p>
+<h4 id="往版本库中添加新的文件"><a href="#往版本库中添加新的文件" class="headerlink" title="往版本库中添加新的文件"></a>往版本库中添加新的文件</h4><pre><code>svn add file
+</code></pre><blockquote>
+<p>例如：svn add test.php(添加test.php)<br>svn add *.php(添加当前目录下所有的php文件)</p>
 </blockquote>
-<h4 id="往版本库中添加新的文件"><a href="#往版本库中添加新的文件" class="headerlink" title="往版本库中添加新的文件"></a>往版本库中添加新的文件</h4><blockquote>
-<p>svn add file<br>例如：svn add test.php(添加test.php)<br>svn add *.php(添加当前目录下所有的php文件)</p>
+<h4 id="将改动的文件提交到版本库"><a href="#将改动的文件提交到版本库" class="headerlink" title="将改动的文件提交到版本库"></a>将改动的文件提交到版本库</h4><pre><code>svn commit -m “LogMessage“ [-N] [--no-unlock] PATH(如果选择了保持锁，就使用–no-unlock开关)
+</code></pre><blockquote>
+<p>例如：svn commit -m “add test file for my test“ test.php<br>简写：svn ci</p>
 </blockquote>
-<h4 id="将改动的文件提交到版本库"><a href="#将改动的文件提交到版本库" class="headerlink" title="将改动的文件提交到版本库"></a>将改动的文件提交到版本库</h4><blockquote>
-<p>svn commit -m “LogMessage“ [-N] [–no-unlock] PATH(如果选择了保持锁，就使用–no-unlock开关)<br>例如：svn commit -m “add test file for my test“ test.php<br>简写：svn ci</p>
+<h4 id="加锁-解锁"><a href="#加锁-解锁" class="headerlink" title="加锁/解锁"></a>加锁/解锁</h4><pre><code>svn lock -m “LockMessage“ [--force] PATH
+</code></pre><blockquote>
+<p>例如：svn lock -m “lock test file“ test.php<br>svn unlock PATH</p>
 </blockquote>
-<h4 id="加锁-解锁"><a href="#加锁-解锁" class="headerlink" title="加锁/解锁"></a>加锁/解锁</h4><blockquote>
-<p>svn lock -m “LockMessage“ [–force] PATH<br>例如：svn lock -m “lock test file“ test.php<br>svn unlock PATH</p>
+<h4 id="更新到某个版本"><a href="#更新到某个版本" class="headerlink" title="更新到某个版本"></a>更新到某个版本</h4><pre><code>svn update -r m path
+</code></pre><blockquote>
+<p><code>svn update</code> 如果后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本。<br><code>svn update -r 200 test.php</code>(将版本库中的文件<code>test.php</code>还原到版本<code>200</code>)<br><code>svn update test.php</code>(更新，于版本库同步。如果在提交的时候提示过期的话，是因为冲突，需要先<code>update</code>，修改文件，然后清除<code>svn resolved</code>，最后再提交<code>commit</code>)<br>简写：<code>svn up</code></p>
 </blockquote>
-<h4 id="更新到某个版本"><a href="#更新到某个版本" class="headerlink" title="更新到某个版本"></a>更新到某个版本</h4><blockquote>
-<p>svn update -r m path<br>svn update 如果后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本。<br>svn update -r 200 test.php(将版本库中的文件test.php还原到版本200)<br>svn update test.php(更新，于版本库同步。如果在提交的时候提示过期的话，是因为冲突，需要先update，修改文件，然后清除svn resolved，最后再提交commit)<br>简写：svn up</p>
+<h4 id="查看文件或者目录状态"><a href="#查看文件或者目录状态" class="headerlink" title="查看文件或者目录状态"></a>查看文件或者目录状态</h4><pre><code>svn status path（目录下的文件和子目录的状态，正常状态不显示）
+</code></pre><blockquote>
+<p>?：不在<code>svn</code>的控制中；<code>M</code>：内容被修改；<code>C</code>：发生冲突；<code>A</code>：预定加入到版本库；<code>K</code>：被锁定】<br><code>svn status -v path</code>(显示文件和子目录状态)<br>第一列保持相同，第二列显示工作版本号，第三和第四列显示最后一次修改的版本号和修改人。<br>注：<code>svn status、svn diff</code>和 <code>svn revert</code>这三条命令在没有网络的情况下也可以执行的，原因是svn在本地的.svn中保留了本地版本的原始拷贝。<br>简写：<code>svn st</code></p>
 </blockquote>
-<h4 id="查看文件或者目录状态"><a href="#查看文件或者目录状态" class="headerlink" title="查看文件或者目录状态"></a>查看文件或者目录状态</h4><blockquote>
-<p>svn status path（目录下的文件和子目录的状态，正常状态不显示）<br>?：不在svn的控制中；M：内容被修改；C：发生冲突；A：预定加入到版本库；K：被锁定】<br>svn status -v path(显示文件和子目录状态)<br>第一列保持相同，第二列显示工作版本号，第三和第四列显示最后一次修改的版本号和修改人。<br>注：svn status、svn diff和 svn revert这三条命令在没有网络的情况下也可以执行的，原因是svn在本地的.svn中保留了本地版本的原始拷贝。<br>简写：svn st</p>
+<h4 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h4><pre><code>svn delete path -m “delete test fle“
+</code></pre><blockquote>
+<p>例如：<code>svn delete svn://192.168.1.1/pro/domain/test.php -m “delete test file”</code><br>或者直接<code>svn delete test.php</code> 然后再<code>svn ci -m ‘delete test file</code>‘，<br>推荐使用这种 简写：<code>svn (del, remove, rm)</code></p>
 </blockquote>
-<h4 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h4><blockquote>
-<p>svn delete path -m “delete test fle“<br>例如：svn delete svn://192.168.1.1/pro/domain/test.php -m “delete test file”<br>或者直接svn delete test.php 然后再svn ci -m ‘delete test file‘，<br>推荐使用这种 简写：svn (del, remove, rm)</p>
+<h4 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h4><pre><code>svn log path
+</code></pre><blockquote>
+<p>例如：<code>svn log test.php</code> 显示这个文件的所有修改记录，及其版本号的变化</p>
 </blockquote>
-<h4 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h4><blockquote>
-<p>svn log path<br>例如：svn log test.php 显示这个文件的所有修改记录，及其版本号的变化</p>
+<h4 id="查看文件详细信息"><a href="#查看文件详细信息" class="headerlink" title="查看文件详细信息"></a>查看文件详细信息</h4><pre><code>svn info path
+</code></pre><blockquote>
+<p>例如：<code>svn info test.php</code></p>
 </blockquote>
-<h4 id="查看文件详细信息"><a href="#查看文件详细信息" class="headerlink" title="查看文件详细信息"></a>查看文件详细信息</h4><blockquote>
-<p>svn info path<br>例如：svn info test.php</p>
+<h4 id="比较差异"><a href="#比较差异" class="headerlink" title="比较差异"></a>比较差异</h4><pre><code>svn diff path(将修改的文件与基础版本比较)
+</code></pre><blockquote>
+<p>例如：<code>svn diff test.php</code><br>s<code>vn diff -r m:n path</code>(对版本m和版本n比较差异)<br>例如：<code>svn diff -r 200:201 test.php</code><br>简写：<code>svn di</code></p>
 </blockquote>
-<h4 id="比较差异"><a href="#比较差异" class="headerlink" title="比较差异"></a>比较差异</h4><blockquote>
-<p>svn diff path(将修改的文件与基础版本比较)<br>例如：svn diff test.php<br>svn diff -r m:n path(对版本m和版本n比较差异)<br>例如：svn diff -r 200:201 test.php<br>简写：svn di</p>
+<h4 id="将两个版本之间的差异合并到当前文件"><a href="#将两个版本之间的差异合并到当前文件" class="headerlink" title="将两个版本之间的差异合并到当前文件"></a>将两个版本之间的差异合并到当前文件</h4><pre><code>svn merge -r m:n path
+</code></pre><p>例如：<code>svn merge -r 200:205 test.php</code>（将版本<code>200</code>与<code>205</code>之间的差异合并到当前文件，但是一般都会产生冲突，需要处理一下）</p>
+<h4 id="SVN-帮助"><a href="#SVN-帮助" class="headerlink" title="SVN 帮助"></a>SVN 帮助</h4><pre><code>svn help
+svn help ci
+</code></pre><h4 id="版本库下的文件和目录列表"><a href="#版本库下的文件和目录列表" class="headerlink" title="版本库下的文件和目录列表"></a>版本库下的文件和目录列表</h4><pre><code>svn list path
+</code></pre><blockquote>
+<p>简写：<code>svn ls</code><br>显示<code>path</code>目录下的所有属于版本库的文件和目录</p>
 </blockquote>
-<h4 id="将两个版本之间的差异合并到当前文件"><a href="#将两个版本之间的差异合并到当前文件" class="headerlink" title="将两个版本之间的差异合并到当前文件"></a>将两个版本之间的差异合并到当前文件</h4><blockquote>
-<p>svn merge -r m:n path</p>
+<h4 id="创建纳入版本控制下的新目录"><a href="#创建纳入版本控制下的新目录" class="headerlink" title="创建纳入版本控制下的新目录"></a>创建纳入版本控制下的新目录</h4><pre><code>svn mkdir: 创建纳入版本控制下的新目录。
+</code></pre><blockquote>
+<p>用法: 1、<code>mkdir PATH…</code><br>      2、<code>mkdir URL…</code></p>
 </blockquote>
-<p>例如：svn merge -r 200:205 test.php（将版本200与205之间的差异合并到当前文件，但是一般都会产生冲突，需要处理一下）</p>
-<h4 id="SVN-帮助"><a href="#SVN-帮助" class="headerlink" title="SVN 帮助"></a>SVN 帮助</h4><blockquote>
-<p>svn help<br>svn help ci</p>
+<p> 创建版本控制的目录。<br>1、每一个以工作副本 <code>PATH</code> 指定的目录，都会创建在本地端，并且加入新增调度，以待下一次的提交。<br>2、每个以<code>URL</code>指定的目录，都会透过立即提交于仓库中创建。在这两个情况下，所有的中间目录都必须事先存在</p>
+<h4 id="恢复本地修改"><a href="#恢复本地修改" class="headerlink" title="恢复本地修改"></a>恢复本地修改</h4><pre><code>svn revert: 恢复原始未改变的工作副本文件 (恢复大部份的本地修改)。
+</code></pre><blockquote>
+<p>用法: <code>revert PATH…</code><br>注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复被删除的目录</p>
 </blockquote>
-<h4 id="版本库下的文件和目录列表"><a href="#版本库下的文件和目录列表" class="headerlink" title="版本库下的文件和目录列表"></a>版本库下的文件和目录列表</h4><blockquote>
-<p>svn list path<br>简写：svn ls<br>显示path目录下的所有属于版本库的文件和目录</p>
+<h4 id="代码库URL变更"><a href="#代码库URL变更" class="headerlink" title="代码库URL变更"></a>代码库URL变更</h4><pre><code>svn switch (sw): 更新工作副本至不同的URL。
+</code></pre><blockquote>
+<p> 用法: 1、<code>switch URL [PATH]</code><br> <code>switch –relocate FROM TO [PATH...]</code></p>
 </blockquote>
-<h4 id="创建纳入版本控制下的新目录"><a href="#创建纳入版本控制下的新目录" class="headerlink" title="创建纳入版本控制下的新目录"></a>创建纳入版本控制下的新目录</h4><blockquote>
-<p>svn mkdir: 创建纳入版本控制下的新目录。<br>用法: 1、mkdir PATH…<br>      2、mkdir URL…</p>
-</blockquote>
-<p> 创建版本控制的目录。<br>1、每一个以工作副本 PATH 指定的目录，都会创建在本地端，并且加入新增调度，以待下一次的提交。<br>2、每个以URL指定的目录，都会透过立即提交于仓库中创建。在这两个情况下，所有的中间目录都必须事先存在</p>
-<h4 id="恢复本地修改"><a href="#恢复本地修改" class="headerlink" title="恢复本地修改"></a>恢复本地修改</h4><blockquote>
-<p>svn revert: 恢复原始未改变的工作副本文件 (恢复大部份的本地修改)。revert:<br>用法: revert PATH…<br>注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复被删除的目录</p>
-</blockquote>
-<h4 id="代码库URL变更"><a href="#代码库URL变更" class="headerlink" title="代码库URL变更"></a>代码库URL变更</h4><blockquote>
-<p>svn switch (sw): 更新工作副本至不同的URL。<br> 用法: 1、switch URL [PATH]<br> switch –relocate FROM TO [PATH…]</p>
-</blockquote>
-<p> 1、更新你的工作副本，映射到一个新的URL，其行为跟“svn update”很像，也会将<br> 服务器上文件与本地文件合并。这是将工作副本对应到同一仓库中某个分支或者标记的<br> 方法。<br> 2、改写工作副本的URL元数据，以反映单纯的URL上的改变。当仓库的根URL变动<br> (比如方案名或是主机名称变动)，但是工作副本仍旧对映到同一仓库的同一目录时使用<br>这个命令更新工作副本与仓库的对应关系。</p>
-<h4 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h4><blockquote>
-<p>svn resolved: 移除工作副本的目录或文件的“冲突”状态。<br>用法: resolved PATH…<br>注意: 本子命令不会依语法来解决冲突或是移除冲突标记；它只是移除冲突的<br>相关文件，然后让 PATH 可以再次提交。</p>
+<p> 1、更新你的工作副本，映射到一个新的<code>URL</code>，其行为跟<code>“svn update”</code>很像，也会将<br> 服务器上文件与本地文件合并。这是将工作副本对应到同一仓库中某个分支或者标记的<br> 方法。<br> 2、改写工作副本的<code>URL</code>元数据，以反映单纯的<code>URL</code>上的改变。当仓库的根URL变动<br> (比如方案名或是主机名称变动)，但是工作副本仍旧对映到同一仓库的同一目录时使用<br>这个命令更新工作副本与仓库的对应关系。</p>
+<h4 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h4><pre><code>svn resolved: 移除工作副本的目录或文件的“冲突”状态。
+</code></pre><blockquote>
+<p>用法: <code>resolved PATH</code>…<br>注意: 本子命令不会依语法来解决冲突或是移除冲突标记；它只是移除冲突的<br>相关文件，然后让 <code>PATH</code> 可以再次提交。</p>
 </blockquote>
     </div>
   </div>
