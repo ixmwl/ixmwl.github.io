@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <link rel="stylesheet" href="/highlight/styles/xcode.css">
+  <script src="/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>GCD使用详解 | 夏末的杂货铺</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="iOS开发,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">夏末的杂货铺</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a href="/" target="_self">
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a href="/archives/" target="_self">
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a href="/categories/" target="_self">
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a href="/tags/" target="_self">
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a href="/friends/" target="_self">
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a href="/about/" target="_self">
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path>
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a href="https://github.com/ixmwl" target="_blank">
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://gitee.com/ixmwl" target="_blank">
+                    码云
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://www.jianshu.com/u/eac0613bd801" target="_blank">
+                    简书
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>GCD使用详解</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2019-06-20
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/iOS开发/">
+            iOS开发
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="GCD使用详解"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <p></p>
+<h2 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a>GCD</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p> 1、<code>GCD</code>全称 <code>Grand Central Dispatch</code> ，是纯<code>C</code>语言，提供了非常多强大的函数，来进行系统线程的管理。<br> 2、优势：<code>GCD</code>是苹果公司为多核的并行运算提出的解决方案。<code>GCD</code>会自动利用更多的<code>CPU</code>内核，会自动管理线程的生命周期（创建线程、调度任务、销毁线程），程序员只需要告诉<code>GCD</code>想要执行什么任务，不需要编写任何线程管理代码。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>并发</th>
+<th>串行</th>
+<th>主队列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同步(<code>sync</code>)</td>
+<td>没有开启新线程 串行执行任务</td>
+<td>没有开启新线程 串行执行</td>
+<td>锁死</td>
+</tr>
+<tr>
+<td>异步(<code>async</code>)</td>
+<td>有开启新线程 并行执行</td>
+<td>有开启新线程 串行执行</td>
+<td>没开启新线程 串行执行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="串行并发区别"><a href="#串行并发区别" class="headerlink" title="串行并发区别"></a>串行并发区别</h3><p>串行 (<code>DISPATCH_QUEUE_SERIAL</code>)、并发 (<code>DISPATCH_QUEUE_CONCURRENT</code>)关于两者的区别，用一下两张盗图可以表示的很清楚<br><img src="https://github.com/ixmwl/BlogResource/blob/master/GCD/%E4%B8%B2%E8%A1%8C%E9%98%9F%E5%88%97.png?raw=true" alt><br><img src="https://github.com/ixmwl/BlogResource/blob/master/GCD/%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97.png?raw=true" alt></p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>GCD 的使用步骤其实很简单，只有两步：</p>
+<ol>
+<li>创建一个队列（串行队列或并发队列）；</li>
+<li>将任务追加到任务的等待队列中，然后系统就会根据任务类型执行任务（同步执行或异步执行）</li>
+</ol>
+<h2 id="四种组合方式"><a href="#四种组合方式" class="headerlink" title="四种组合方式"></a>四种组合方式</h2><h3 id="同步执行-并发队列"><a href="#同步执行-并发队列" class="headerlink" title="同步执行 + 并发队列"></a>同步执行 + 并发队列</h3><pre><code class="bash">/**
+ 同步 + 并发
+ 在当前线程中执行任务，不会开启新线程，执行完一个任务，再执行下一个任务。
+ */
+- (void)synchronousAndConcurrent{
+
+    NSLog(@&quot;currentThread---%@&quot;,[NSThread currentThread]);  // 打印当前线程
+    NSLog(@&quot;synchronousAndConcurrent---begin&quot;); //线程开始
+
+    dispatch_queue_t queue = dispatch_queue_create(&quot;com.leocy.gcd&quot;, DISPATCH_QUEUE_CONCURRENT);
+
+    dispatch_sync(queue, ^{
+        // 添加任务1
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;1---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_sync(queue, ^{
+        // 添加任务2
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;2---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_sync(queue, ^{
+        // 添加任务3
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;3---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+     NSLog(@&quot;synchronousAndConcurrent---end&quot;); //线程结束
+}
+</code></pre>
+<p>运行结果:<strong>没开启新线程，串行执行</strong></p>
+<blockquote>
+<p>2019-01-15 17:31:46.958190+0800 GCD使用[11901:3502931] currentThread—&lt;NSThread: 0x283c32e00&gt;{number = 1, name = main}<br>2019-01-15 17:31:46.958258+0800 GCD使用[11901:3502931] synchronousAndConcurrent—begin<br>2019-01-15 17:31:48.959827+0800 GCD使用[11901:3502931] 1—&lt;NSThread: 0x283c32e00&gt;{number = 1, name = main}<br>2019-01-15 17:31:50.961196+0800 GCD使用[11901:3502931] 1—&lt;NSThread: 0x283c32e00&gt;{number = 1, name = main}<br>2019-01-15 17:31:52.962809+0800 GCD使用[11901:3502931] 2—&lt;NSThread: 0x283c32e00&gt;{number = 1, name = main}<br>2019-01-15 17:31:54.963861+0800 GCD使用[11901:3502931] 2—&lt;NSThread: 0x283c32e00&gt;{number = 1, name = main}<br>2019-01-15 17:31:56.965229+0800 GCD使用[11901:3502931] 3—&lt;NSThread: 0x283c32e00&gt;{number = 1, name = main}<br>2019-01-15 17:31:58.966589+0800 GCD使用[11901:3502931] 3—&lt;NSThread: 0x283c32e00&gt;{number = 1, name = main}<br>2019-01-15 17:32:02.847758+0800 GCD使用[11901:3502931] synchronousAndConcurrent—end<br>(lldb) </p>
+</blockquote>
+<h3 id="异步执行-并发队列"><a href="#异步执行-并发队列" class="headerlink" title="异步执行 + 并发队列"></a>异步执行 + 并发队列</h3><pre><code class="bash">/**
+ 异步 + 并发
+ 可以开启多个线程，任务交替（同时）执行。
+ */
+- (void)asynchronousAndConcurrent{
+
+    NSLog(@&quot;currentThread---%@&quot;,[NSThread currentThread]);  // 打印当前线程
+    NSLog(@&quot;synchronousAndSerial---begin&quot;); //线程开始
+
+    dispatch_queue_t queue = dispatch_queue_create(&quot;com.leocy.gcd&quot;, DISPATCH_QUEUE_CONCURRENT);
+
+    dispatch_async(queue, ^{
+        // 添加任务1
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;1---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_async(queue, ^{
+        // 添加任务2
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;2---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_async(queue, ^{
+        // 添加任务3
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;3---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    NSLog(@&quot;asynchronousAndConcurrent---end&quot;); //线程结束
+}
+</code></pre>
+<p>执行结果:<strong>开启新线程，并发执行</strong></p>
+<blockquote>
+<p>2019-01-15 17:34:40.553187+0800 GCD使用[11912:3504396] currentThread—&lt;NSThread: 0x281dbee40&gt;{number = 1, name = main}<br>2019-01-15 17:34:40.553228+0800 GCD使用[11912:3504396] synchronousAndSerial—begin<br>2019-01-15 17:34:40.553262+0800 GCD使用[11912:3504396] asynchronousAndConcurrent—end<br>2019-01-15 17:34:44.382094+0800 GCD使用[11912:3504445] 3—&lt;NSThread: 0x281df02c0&gt;{number = 5, name = (null)}<br>2019-01-15 17:34:44.382096+0800 GCD使用[11912:3504446] 1—&lt;NSThread: 0x281dd4540&gt;{number = 4, name = (null)}<br>2019-01-15 17:34:44.382237+0800 GCD使用[11912:3504443] 2—&lt;NSThread: 0x281de2100&gt;{number = 3, name = (null)}<br>2019-01-15 17:34:46.385780+0800 GCD使用[11912:3504443] 2—&lt;NSThread: 0x281de2100&gt;{number = 3, name = (null)}<br>2019-01-15 17:34:46.385779+0800 GCD使用[11912:3504445] 3—&lt;NSThread: 0x281df02c0&gt;{number = 5, name = (null)}<br>2019-01-15 17:34:46.385779+0800 GCD使用[11912:3504446] 1—&lt;NSThread: 0x281dd4540&gt;{number = 4, name = (null)}</p>
+</blockquote>
+<!--![](https://github.com/ReaperLC/Hello-World/blob/master/GCD/GCD%E4%BD%BF%E7%94%A8/Resource/%E5%BC%82%E6%AD%A5+%E5%B9%B6%E5%8F%91.png?raw=true)-->
+<h3 id="同步执行-串行队列"><a href="#同步执行-串行队列" class="headerlink" title="同步执行 + 串行队列"></a>同步执行 + 串行队列</h3><pre><code class="bash">/**
+ 同步 + 串行
+ 不会开启新线程，在当前线程执行任务。任务是串行的，执行完一个任务，再执行下一个任务。
+ */
+- (void)synchronousAndSerial{
+
+    NSLog(@&quot;currentThread---%@&quot;,[NSThread currentThread]);  // 打印当前线程
+    NSLog(@&quot;synchronousAndSerial---begin&quot;); //线程开始
+
+    dispatch_queue_t queue = dispatch_queue_create(&quot;com.leocy.gcd&quot;, DISPATCH_QUEUE_SERIAL);
+
+    dispatch_sync(queue, ^{
+        // 添加任务1
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;1---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_sync(queue, ^{
+        // 添加任务2
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;2---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_sync(queue, ^{
+        // 添加任务3
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;3---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    NSLog(@&quot;synchronousAndSerial---end&quot;); //线程结束
+}
+</code></pre>
+<p>执行结果:<strong>没开启新线程，串行执行</strong></p>
+<blockquote>
+<p>2019-01-15 17:33:37.132737+0800 GCD使用[11907:3503870] currentThread—&lt;NSThread: 0x2815e2e40&gt;{number = 1, name = main}<br>2019-01-15 17:33:37.132774+0800 GCD使用[11907:3503870] synchronousAndSerial—begin<br>2019-01-15 17:33:39.134268+0800 GCD使用[11907:3503870] 1—&lt;NSThread: 0x2815e2e40&gt;{number = 1, name = main}<br>2019-01-15 17:33:41.135846+0800 GCD使用[11907:3503870] 1—&lt;NSThread: 0x2815e2e40&gt;{number = 1, name = main}<br>2019-01-15 17:33:43.137197+0800 GCD使用[11907:3503870] 2—&lt;NSThread: 0x2815e2e40&gt;{number = 1, name = main}<br>2019-01-15 17:33:45.138594+0800 GCD使用[11907:3503870] 2—&lt;NSThread: 0x2815e2e40&gt;{number = 1, name = main}<br>2019-01-15 17:33:47.140036+0800 GCD使用[11907:3503870] 3—&lt;NSThread: 0x2815e2e40&gt;{number = 1, name = main}<br>2019-01-15 17:33:49.141438+0800 GCD使用[11907:3503870] 3—&lt;NSThread: 0x2815e2e40&gt;{number = 1, name = main}<br>2019-01-15 17:33:49.141599+0800 GCD使用[11907:3503870] synchronousAndSerial—end<br>(lldb) </p>
+</blockquote>
+<h3 id="异步执行-串行队列"><a href="#异步执行-串行队列" class="headerlink" title="异步执行 + 串行队列"></a>异步执行 + 串行队列</h3><pre><code class="bash">/**
+ 异步 + 串行
+ 特点：会开启一条新线程，但是因为任务是串行的，执行完一个任务，再执行下一个任务。
+ */
+- (void)asynchronousAndSerial{
+    NSLog(@&quot;currentThread---%@&quot;,[NSThread currentThread]);  // 打印当前线程
+    NSLog(@&quot;synchronousAndSerial---begin&quot;); //线程开始
+
+    dispatch_queue_t queue = dispatch_queue_create(&quot;com.leocy.gcd&quot;, DISPATCH_QUEUE_SERIAL);
+
+    dispatch_async(queue, ^{
+        // 添加任务1
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;1---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_async(queue, ^{
+        // 添加任务2
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;2---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_async(queue, ^{
+        // 添加任务3
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;3---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+     NSLog(@&quot;synchronousAndSerial---end&quot;); //线程结束
+}
+</code></pre>
+<p> 执行结果:<strong>开启一条新线程，串行执行</strong></p>
+<blockquote>
+<p>2019-01-15 17:35:35.597125+0800 GCD使用[11917:3504860] currentThread—&lt;NSThread: 0x281265b80&gt;{number = 1, name = main}<br>2019-01-15 17:35:35.597163+0800 GCD使用[11917:3504860] synchronousAndSerial—begin<br>2019-01-15 17:35:35.597196+0800 GCD使用[11917:3504860] synchronousAndSerial—end<br>2019-01-15 17:35:38.944090+0800 GCD使用[11917:3504894] 1—&lt;NSThread: 0x281207740&gt;{number = 4, name = (null)}<br>2019-01-15 17:35:40.949580+0800 GCD使用[11917:3504894] 1—&lt;NSThread: 0x281207740&gt;{number = 4, name = (null)}<br>2019-01-15 17:35:42.955068+0800 GCD使用[11917:3504894] 2—&lt;NSThread: 0x281207740&gt;{number = 4, name = (null)}<br>2019-01-15 17:35:44.960644+0800 GCD使用[11917:3504894] 2—&lt;NSThread: 0x281207740&gt;{number = 4, name = (null)}<br>2019-01-15 17:35:46.966089+0800 GCD使用[11917:3504894] 3—&lt;NSThread: 0x281207740&gt;{number = 4, name = (null)}<br>2019-01-15 17:35:48.971523+0800 GCD使用[11917:3504894] 3—&lt;NSThread: 0x281207740&gt;{number = 4, name = (null)}</p>
+</blockquote>
+<h2 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h2><h3 id="同步执行-主队列"><a href="#同步执行-主队列" class="headerlink" title="同步执行 + 主队列"></a>同步执行 + 主队列</h3><pre><code class="bash">/**
+ * 同步 + 主队列
+ * 特点(主线程调用)：互等卡主不执行。
+ * 特点(其他线程调用)：不会开启新线程，执行完一个任务，再执行下一个任务。
+ */
+- (void) synchronousAndMain {
+
+    NSLog(@&quot;currentThread---%@&quot;,[NSThread currentThread]);  // 打印当前线程
+    NSLog(@&quot;synchronousAndMain---begin&quot;);
+
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+//    dispatch_queue_t mainQueue = dispatch_queue_create(&quot;com.leocy.gcd&quot;, DISPATCH_QUEUE_SERIAL);
+    dispatch_sync(mainQueue, ^{
+        // 追加任务1
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;1---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+    dispatch_sync(mainQueue, ^{
+        // 追加任务2
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;2---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+    dispatch_sync(mainQueue, ^{
+        // 追加任务3
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;3---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+    NSLog(@&quot;synchronousAndMain---end&quot;);
+}
+</code></pre>
+<p>执行结果:<strong>主线程调用：死锁卡住不执行 其他线程调用：没有开启新线程，串行执行任务</strong></p>
+<h3 id="异步执行-主队列"><a href="#异步执行-主队列" class="headerlink" title="异步执行 + 主队列"></a>异步执行 + 主队列</h3><pre><code class="bash">/**
+ 异步 +  主队列
+ */
+- (void)asynchrnousAndMain {
+    NSLog(@&quot;currentThread---%@&quot;,[NSThread currentThread]);  // 打印当前线程
+    NSLog(@&quot;asynchrnousAndMain---begin&quot;);
+
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+
+    dispatch_async(mainQueue, ^{
+        // 追加任务1
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;1---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_async(mainQueue, ^{
+        // 追加任务2
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;2---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_async(mainQueue, ^{
+        // 追加任务3
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;3---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+    NSLog(@&quot;asynchrnousAndMain---end&quot;);
+}
+</code></pre>
+<p>执行结果:<strong>没开启新线程，串行执行</strong></p>
+<blockquote>
+<p>2019-01-15 17:39:53.716154+0800 GCD使用[11927:3506203] currentThread—&lt;NSThread: 0x283c02e40&gt;{number = 1, name = main}<br>2019-01-15 17:39:53.716196+0800 GCD使用[11927:3506203] asynchrnousAndMain—begin<br>2019-01-15 17:39:53.716226+0800 GCD使用[11927:3506203] asynchrnousAndMain—end<br>2019-01-15 17:39:57.868912+0800 GCD使用[11927:3506203] 1—&lt;NSThread: 0x283c02e40&gt;{number = 1, name = main}<br>2019-01-15 17:39:59.870304+0800 GCD使用[11927:3506203] 1—&lt;NSThread: 0x283c02e40&gt;{number = 1, name = main}<br>2019-01-15 17:40:01.871099+0800 GCD使用[11927:3506203] 2—&lt;NSThread: 0x283c02e40&gt;{number = 1, name = main}<br>2019-01-15 17:40:03.872303+0800 GCD使用[11927:3506203] 2—&lt;NSThread: 0x283c02e40&gt;{number = 1, name = main}<br>2019-01-15 17:40:05.873882+0800 GCD使用[11927:3506203] 3—&lt;NSThread: 0x283c02e40&gt;{number = 1, name = main}<br>2019-01-15 17:40:07.875393+0800 GCD使用[11927:3506203] 3—&lt;NSThread: 0x283c02e40&gt;{number = 1, name = main}</p>
+</blockquote>
+<h2 id="其他常用"><a href="#其他常用" class="headerlink" title="其他常用"></a>其他常用</h2><h3 id="栅栏-dispatch-barrier-async"><a href="#栅栏-dispatch-barrier-async" class="headerlink" title="栅栏  dispatch_barrier_async"></a>栅栏  dispatch_barrier_async</h3><pre><code class="bash">dispatch_barrier_sync(queue, ^{
+        NSLog(@&quot;========栅栏=========&quot;);
+});
+</code></pre>
+<p>效果:<strong>栅栏上的上方的先执行,下方的待上方执行完毕后执行</strong></p>
+<h3 id="延时-dispatch-after"><a href="#延时-dispatch-after" class="headerlink" title="延时  dispatch_after"></a>延时  dispatch_after</h3><blockquote>
+<p>使用场景：要求在指定时间（例如：5s后）执行某操作</p>
+</blockquote>
+<p>理论上讲<code>dispatch_after</code>在延时上并不准确，因为并不是指定时间后就开始处理，而是要追加到队列中等待，但是大致延迟还是可以胜任的。</p>
+<pre><code class="bash">- (void)dispatch_barrier_async{
+    dispatch_queue_t queue = dispatch_queue_create(&quot;www.huangchengdu.com&quot;, DISPATCH_QUEUE_CONCURRENT);
+
+    dispatch_async(queue, ^{
+        // 追加任务1
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;1---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+    dispatch_async(queue, ^{
+        // 追加任务2
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;2---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_barrier_async(queue, ^{
+        // 追加任务 barrier
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;barrier---%@&quot;,[NSThread currentThread]);// 打印当前线程
+        }
+    });
+
+    dispatch_async(queue, ^{
+        // 追加任务3
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;3---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+    dispatch_async(queue, ^{
+        // 追加任务4
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;4---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+}
+</code></pre>
+<blockquote>
+<p>2019-12-06 11:08:47.290129+0800 GCD详尽总结[27451:11984862] 1—&lt;NSThread: 0x6000006caf40&gt;{number = 4, name = (null)}<br>2019-12-06 11:08:47.290125+0800 GCD详尽总结[27451:11984629] 2—&lt;NSThread: 0x6000006fc580&gt;{number = 3, name = (null)}<br>2019-12-06 11:08:49.293997+0800 GCD详尽总结[27451:11984629] 2—&lt;NSThread: 0x6000006fc580&gt;{number = 3, name = (null)}<br>2019-12-06 11:08:49.293997+0800 GCD详尽总结[27451:11984862] 1—&lt;NSThread: 0x6000006caf40&gt;{number = 4, name = (null)}<br>2019-12-06 11:08:51.298193+0800 GCD详尽总结[27451:11984862] barrier—&lt;NSThread: 0x6000006caf40&gt;{number = 4, name = (null)}<br>2019-12-06 11:08:53.298722+0800 GCD详尽总结[27451:11984862] barrier—&lt;NSThread: 0x6000006caf40&gt;{number = 4, name = (null)}<br>2019-12-06 11:08:55.303988+0800 GCD详尽总结[27451:11984629] 4—&lt;NSThread: 0x6000006fc580&gt;{number = 3, name = (null)}<br>2019-12-06 11:08:55.303988+0800 GCD详尽总结[27451:11984862] 3—&lt;NSThread: 0x6000006caf40&gt;{number = 4, name = (null)}<br>2019-12-06 11:08:57.305894+0800 GCD详尽总结[27451:11984629] 4—&lt;NSThread: 0x6000006fc580&gt;{number = 3, name = (null)}<br>2019-12-06 11:08:57.305894+0800 GCD详尽总结[27451:11984862] 3—&lt;NSThread: 0x6000006caf40&gt;{number = 4, name = (null)}</p>
+</blockquote>
+<h3 id="一次-dispatch-once-（单例）"><a href="#一次-dispatch-once-（单例）" class="headerlink" title="一次  dispatch_once  （单例）"></a>一次  dispatch_once  （单例）</h3><blockquote>
+<p>使用场景：整个程序运行过程中只执行一次的代码时</p>
+</blockquote>
+<p>我们在创建单例、或者有整个程序运行过程中只执行一次的代码时，我们就用到了 GCD 的 <code>dispatch_once</code>方法。使用 <code>dispatch_once</code> 方法能保证某段代码在程序运行过程中只被执行 <code>1</code>次，并且即使在多线程的环境下，<code>dispatch_once</code> 也可以保证线程安全。</p>
+<pre><code class="bash">static dispatch_once_t onceToken;
+dispatch_once(&amp;onceToken, ^{
+    // 即将执行一次的代码
+});
+</code></pre>
+<h3 id="对列组-dispatch-group"><a href="#对列组-dispatch-group" class="headerlink" title="对列组 dispatch_group"></a>对列组 dispatch_group</h3><pre><code class="bash">/**
+ * 队列组 dispatch_group_notify
+ */
+- (void)groupNotify {
+    NSLog(@&quot;currentThread---%@&quot;,[NSThread currentThread]);  // 打印当前线程
+    NSLog(@&quot;group---begin&quot;);
+
+    dispatch_group_t group =  dispatch_group_create();
+
+    dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // 追加任务1
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;1---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+    dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // 追加任务2
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;2---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+    });
+
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        for (int i = 0; i &lt; 2; ++i) {
+            [NSThread sleepForTimeInterval:2];              // 模拟耗时操作
+            NSLog(@&quot;3---%@&quot;,[NSThread currentThread]);      // 打印当前线程
+        }
+        NSLog(@&quot;group---end&quot;);
+    });
+}
+</code></pre>
+<p>执行结果:<strong>等前面的异步任务1、任务2都执行完毕后，回到主线程执行下边任务</strong></p>
+<blockquote>
+<p>2019-01-15 18:09:51.686244+0800 GCD使用[11955:3516270] currentThread—&lt;NSThread: 0x2831871c0&gt;{number = 1, name = main}<br>2019-01-15 18:09:51.686295+0800 GCD使用[11955:3516270] group—begin<br>2019-01-15 18:09:55.980170+0800 GCD使用[11955:3516409] 2—&lt;NSThread: 0x283186380&gt;{number = 5, name = (null)}<br>2019-01-15 18:09:55.980168+0800 GCD使用[11955:3516410] 1—&lt;NSThread: 0x2831a8380&gt;{number = 4, name = (null)}<br>2019-01-15 18:09:57.985010+0800 GCD使用[11955:3516410] 1—&lt;NSThread: 0x2831a8380&gt;{number = 4, name = (null)}<br>2019-01-15 18:09:57.985670+0800 GCD使用[11955:3516409] 2—&lt;NSThread: 0x283186380&gt;{number = 5, name = (null)}<br>2019-01-15 18:09:59.987117+0800 GCD使用[11955:3516270] 3—&lt;NSThread: 0x2831871c0&gt;{number = 1, name = main}<br>2019-01-15 18:10:01.988533+0800 GCD使用[11955:3516270] 3—&lt;NSThread: 0x2831871c0&gt;{number = 1, name = main}<br>2019-01-15 18:10:01.988660+0800 GCD使用[11955:3516270] group—end</p>
+</blockquote>
+<h3 id="信号量-dispatch-semaphore"><a href="#信号量-dispatch-semaphore" class="headerlink" title="信号量(dispatch_semaphore)"></a>信号量(dispatch_semaphore)</h3><p>线程安全：使用 semaphore 加锁,实现初始化火车票数量、卖票窗口(线程安全)、并开始卖票</p>
+<pre><code>- (void)dispatch_semaphore{
+    NSLog(@&quot;currentThread---%@&quot;,[NSThread currentThread]);  // 打印当前线程
+    NSLog(@&quot;semaphore---begin&quot;);
+
+    self.semaphoreLock = dispatch_semaphore_create(1);
+    self.ticketSurplusCount = 50;
+
+    //武汉售卖票
+    dispatch_queue_t que1 = dispatch_queue_create(&quot;www.ixmwl.com&quot;, DISPATCH_QUEUE_SERIAL);
+    //上海售卖票
+    dispatch_queue_t que2 = dispatch_queue_create(&quot;www.ixmwl.com&quot;, DISPATCH_QUEUE_SERIAL);
+
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(que1, ^{
+        typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf saleTicket];
+    });
+
+    dispatch_async(que2, ^{
+        typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf saleTicket];
+    });
+}
+
+- (void)saleTicket{
+    while (1) {
+        dispatch_semaphore_wait(self.semaphoreLock, DISPATCH_TIME_FOREVER);
+        if (self.ticketSurplusCount &gt; 0) {
+            self.ticketSurplusCount--;
+            NSLog(@&quot;%@&quot;, [NSString stringWithFormat:@&quot;剩余票数：%ld 窗口：%@&quot;, (long)self.ticketSurplusCount, [NSThread currentThread]]);
+            [NSThread sleepForTimeInterval:0.2];
+            dispatch_semaphore_signal(self.semaphoreLock);
+        }else{
+            dispatch_semaphore_signal(self.semaphoreLock);
+             NSLog(@&quot;所有火车票均已售完&quot;);
+            break;
+        }
+    }
+}
+
+</code></pre>
+    </div>
+  </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2019/05/10/前端/JS/JavaScript基础--数据类型&amp;类型转换/" target="_self">JavaScript基础--数据类型&类型转换</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2019/09/26/iOS开发/iOS13适配问题/" target="_self">iOS13适配问题汇总</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("EU3pLs6R8jtqeOfcoQXrKyir-gzGzoHsz", "qJ21vb6aSD16W6NcEnBBmpa0");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    <span>业精于勤，荒于嬉；行成于思，毁于随。</span>
+    <!-- 博客已运行<span id="time-to-now"></span> -->
+    <!-- <span class="my-face">(●'◡'●)ﾉ♥</span> -->
+    <br>
+      <a href>最困难的事情就是认识自己.</a>
+    <!-- Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a> -->
+    <br>
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2019, 1, 10).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
