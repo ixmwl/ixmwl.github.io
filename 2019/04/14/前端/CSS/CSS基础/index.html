@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <link rel="stylesheet" href="/highlight/styles/xcode.css">
-  <script src="/highlight/highlight.pack.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
-  
-  
+<link rel="stylesheet" href="/highlight/styles/xcode.css">
+<script src="/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- 爆炸红心效果 -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+<script type="text/javascript" src="/js/firework.js"></script>
+
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
@@ -57,13 +60,14 @@
   
 
 </head>
-  <body>
 
-    
+<body>
 
-    <div id="app">
+  
 
-      <div class="header-wrap">
+  <div id="app">
+
+    <div class="header-wrap">
   <header>
     <div class="site-brand">
       <div class="site-title">
@@ -188,7 +192,7 @@
   })
 </script>
 
-      
+    
 
 
 
@@ -325,7 +329,7 @@ line-height
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/04/14/前端/CSS/CSS基础-选择器/" target="_self">CSS基础--选择器</a>
+        <a href="/2019/05/10/前端/JS/JavaScript基础--初识/" target="_self">JavaScript基础--初识</a>
         <i class="iconfont icon-next"></i>
       </div>
     
@@ -465,7 +469,7 @@ if(true){
 </div>
 
 
-      <footer>
+    <footer>
   <p class="site-info">
     <span>业精于勤，荒于嬉；行成于思，毁于随。</span>
     <!-- 博客已运行<span id="time-to-now"></span> -->
@@ -502,7 +506,7 @@ setTimeout(updateTimeStr, 500);
 </script>
 
 
-      <div class="back-to-top hidden">
+    <div class="back-to-top hidden">
   <span>
     <i class="iconfont icon-60"></i><span></span>%
   </span>
@@ -581,10 +585,10 @@ document.querySelector(".back-to-top").addEventListener("click", backToTop, fals
 
 </script>
 
-    </div>
+  </div>
 
-    
-      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <script>
   (() => {
     const mathjaxConfig = {
@@ -613,9 +617,9 @@ document.querySelector(".back-to-top").addEventListener("click", backToTop, fals
     }, 10)    
   })()
 </script>
-    
+  
 
-    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+  <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
 <script async>
   let fancyTimer = setInterval(function(){
     if(!window.$){
@@ -638,7 +642,7 @@ document.querySelector(".back-to-top").addEventListener("click", backToTop, fals
   }, 10);
 </script>
 
-    
-  </body>
+  
+</body>
 
 </html>
