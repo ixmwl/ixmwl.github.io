@@ -71,7 +71,7 @@ header {
   position: relative; }
   .site-brand .site-title {
     margin: 0;
-    font-size: 2rem;
+    font-size: 3rem;
     transition: all 0.1s linear; }
     .site-brand .site-title a {
       transition: all 0.1s linear;
@@ -94,7 +94,6 @@ header {
       display: inline-block;
       margin: 0 1.4rem;
       position: relative;
-      border:;
       border: 2px;
       }
       .site-navigation ul.nav-menu li.nav-item:last-child {
@@ -103,14 +102,14 @@ header {
         display: block;
         transition: all 0.1s linear;
         color:gray;
-        /* border: 2px solid rebeccapurple; */
-        border-radius: 10px;
-        /* background-color: red; */
+        border-radius: 0px;
         }
         .site-navigation ul.nav-menu li.nav-item a:hover {
           color: #222; }
     .site-navigation ul.nav-menu li.nav-item.hover a {
-      color: #1abc9c; }
+      color: #1abc9c; 
+      border-bottom: 2px solid #1abc9c;
+    }
   .site-navigation ul.nav-menu--dropdown {
     position: absolute;
     top: 53px;
@@ -177,7 +176,7 @@ header {
           display: block;
           transition: all 0.1s linear;
           color: #888;
-          background-color: rebeccapurple;
+          background-color: white;
           }
           .site-navigation ul.nav-menu li.nav-item a:hover {
             color: #222; }
