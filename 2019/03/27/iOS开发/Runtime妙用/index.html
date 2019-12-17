@@ -14,12 +14,12 @@
   
   
   
-  <title>iOS屏幕旋转Get了吗 | 夏末的杂货铺</title>
+  <title>iOS Runtime的妙用 | 夏末的杂货铺</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="iOS开发,iOS/屏幕旋转,">
+    <meta name="keywords" content="iOS开发,iOS/Runtime,">
   
 
   <script>
@@ -201,12 +201,12 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>iOS屏幕旋转Get了吗</span>
+    <span>iOS Runtime的妙用</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-12-10
+      2019-03-27
     </span>
     
       <span>
@@ -218,7 +218,7 @@
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="iOS屏幕旋转Get了吗？"></span>
+        浏览 : <span class="article-timer" data-identity="Runtime妙用"></span>
       </span>
     
   </div>
@@ -227,140 +227,175 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="配置旋转属性"><a href="#配置旋转属性" class="headerlink" title="配置旋转属性"></a>配置旋转属性</h2><p>关于屏幕旋转属性的配置有三种选择：</p>
-<ul>
-<li style="list-style: none"><input type="checkbox" checked> <code>Targets</code>中设置</li>
-<li style="list-style: none"><input type="checkbox" checked> <code>info.plist</code>配置项</li>
-<li style="list-style: none"><input type="checkbox" checked> <code>AppDelegate</code>中代码设置</li>
-</ul>
-<p>在说旋转前，有两个枚举类需要介绍下<code>UIDeviceOrientation</code>和<code>UIDeviceOrientation</code></p>
-<table>
-<thead>
-<tr>
-<th>UIDeviceOrientation</th>
-<th>设备方向</th>
-<th><img src="https://github.com/ixmwl/BlogResource/blob/master/屏幕旋转/device.png?raw=true" alt></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>UIInterfaceOrientation</td>
-<td>页面方向</td>
-<td><img src="https://github.com/ixmwl/BlogResource/blob/master/屏幕旋转/interface.png?raw=true" alt="b"></td>
-</tr>
-</tbody>
-</table>
-<p>设备方向只能取值，不能设置，经常用于检测设备方向变化。再对照看下页面方向其实很多都是能对应上的，但有一点需要注意的是：</p>
+      <p></p>
+<h2 id="消息机制"><a href="#消息机制" class="headerlink" title="消息机制"></a>消息机制</h2><p>Runtime进行方法调用本质上是发送消息，通过objc_msgSend()函数进行消息发送,下面就以一个对象的实例化为例</p>
+<pre><code class="bash">Person *p = [[Person alloc] init];
+</code></pre>
+<p>对于我们平常使用的初始化方法 alloc、 init、new,如果用消息机制分解步骤具体如下:</p>
+<pre><code class="bash">//通过类名获取类
+Class class = objc_getClass(&quot;Person&quot;);
+//注意Class实际上也是对象，所以同样能够接受消息，向Class发送alloc消息
+Person *p = objc_msgSend(class,@selector(alloc));
+//发送init消息给Person实例p
+p = objc_msgSend(p,@selector(init));
+//发送run消息给p 即调用run实例方法
+objc_msgSend(p, @selector(run));
+//汇总传递消息链
+objc_msgSend(objc_msgSend(objc_msgSend(objc_getClass(&quot;Person&quot;), @selector(alloc)), @selector(init)), @selector(run));
+</code></pre>
 <blockquote>
-<p><strong>UIInterfaceOrientationLandscapeLeft 与UIDeviceOrientationLandscapeRight相等，反之亦然</strong></p>
+<p><strong>如果只申明了方法编号 ,没有对应的方法实现,在method_array_t的方法列表中没有该方法编号</strong></p>
 </blockquote>
-<p>而且设备方向多了个屏幕朝上还是朝下，这对于程序页面来说是没啥意义的。说完这两个的区别与联系，下面我们就一一来看下，具体该如何配置。</p>
-<h3 id="Targets中配置"><a href="#Targets中配置" class="headerlink" title="Targets中配置"></a>Targets中配置</h3><p>在调试屏幕旋转前，去工程中下面的路径中的旋转方向选项勾选上，否则你后面的任何代码可能都对屏幕旋转没有任何影响<code>Targets&gt;General&gt;Deployment Info&gt;Device Orientation</code></p>
-<ul>
-<li style="list-style: none"><input type="checkbox" checked> Portrait</li>
-<li style="list-style: none"><input type="checkbox" checked> Upside Down</li>
-<li style="list-style: none"><input type="checkbox" checked> Landscape Left</li>
-<li style="list-style: none"><input type="checkbox" checked> Landscape Right</li>
-</ul>
-<h3 id="info-plist配置"><a href="#info-plist配置" class="headerlink" title="info.plist配置"></a>info.plist配置</h3><p>当我们设置了<code>Device Orientation</code>之后，再到<code>info.plist</code>中查看<code>Supported interface orientation</code>,我们会看到<code>info.plist</code>已经自动生成了配置项如下</p>
-<p><img src="https://github.com/ixmwl/BlogResource/blob/master/屏幕旋转/LandScape.png?raw=true" alt></p>
-<p>其实<code>info.plist</code>和<code>targets</code>中的配置是同步的，所以两种方式可以理解为一个方法。</p>
-<h3 id="AppDelegate代码"><a href="#AppDelegate代码" class="headerlink" title="AppDelegate代码"></a>AppDelegate代码</h3><p>因为appdelegate所持有的window对象是全局的，所以在此处去设置屏幕旋转也是可以全局有效的</p>
-<pre><code>- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    return  UIInterfaceOrientationMaskAll;
-}
-</code></pre><p>return的部分可供选择的在前面<code>UIInterfaceOrientation</code>和<code>UIDeviceOrientation</code>的比较中已经枚举过。另外值得注意的是，如果你在<code>delegate</code>中设置了屏幕旋转，那么前面两个的设置将会无效，一切以<code>delegate</code>中代码的设置为准。</p>
-<h2 id="旋转的优先级"><a href="#旋转的优先级" class="headerlink" title="旋转的优先级"></a>旋转的优先级</h2><p>综上可见旋转设置有很多，那么具体如何设置才会生效，其中就存在一个优先级的问题，一是<strong>配置的优先级</strong>：</p>
 <blockquote>
-<p>Appdelegate&amp;&amp;Window &gt; 工程Target属性配置 </p>
+<p>使用objc_msgSend消息机制,必须导入头文件 @import &lt;objc/messgae..h&gt;,让后配置<br>Build Setting–&gt;Apple LLVM 6.0 - Preprocessing–&gt;Enable Strict Checking of objc_msgSend Calls 改为 NO</p>
 </blockquote>
-<p>二是<strong>应用视图层级的优先级</strong>，项目中常见的就是以<code>UITabbarController</code>作为<code>Window</code>的根视图控制器，然后管理着若干个导航控制器<code>UINavigationController</code>，再由导航栏控制器去管理普通的视图控制器<code>UIViewController</code>，那么以此为例，优先级如下：</p>
-<blockquote>
-<p>UITabbarController &gt; UINavigationController &gt; UIViewController</p>
-</blockquote>
-<p>如果具有高优先级的控制器关闭了旋转的功能，那么低优先级的控制器也是无法旋转的，除非强制处理。另外综上</p>
-<blockquote>
-<p>配置的优先级 &gt;  应用视图层级的优先级</p>
-</blockquote>
-<p>如果全局配置都没开启，那么视图层级上面也是不会旋转的</p>
-<h2 id="实现旋转功能"><a href="#实现旋转功能" class="headerlink" title="实现旋转功能"></a>实现旋转功能</h2><p>在iOS的控制中心大家可以找到一个可以主动锁定横竖屏的按钮，如下所示：<br><img src="https://github.com/ixmwl/BlogResource/blob/master/屏幕旋转/lock.jpg?raw=true" alt><br>当此功能开启时，那么不做特殊处理，程序中所有的允许横竖屏切换的设置都会无效，因为此功能开启理论上系统是禁止横竖屏切换的。当然也有例外，前面也说了<code>特殊处理</code>、<code>理论上</code>，所以就算此功能开启，我们也有相关黑科技去强制横竖屏，后面再细细道来。</p>
-<p>其实大多数情况下，开发app过程中大多数都是竖屏，少数情况下有部分页面有需求要横屏。横屏可能在游戏类应用中见到的更多。</p>
-<p>关于设置屏幕旋转，主要是系统提供的一下几个方法：</p>
-<pre><code class="//是否自动旋转">-(BOOL)shouldAutorotate{
-    return YES或者NO;
-}
-
-//支持哪些屏幕方向
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return 支持方向;
-}
-
-//默认方向
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    return 默认方向;
+<p>当向一个实例对象发送消息时,对象会根据super class指针找到object_class这个结构体,在这个结构体中,有一个method_array_t存储的方法列表,向对象发送消息就回去</p>
+<p>在消息发送过程中,倘若没找到指定消息,runtime为我们预留了三次补救机会method_array_t中找是否有对应方法的实现,如果没有找到,就会沿着继承树去找,直到找到根类, 如果根类也没有对应方法实现,那么接下来就进入了我们常说的消息转发流程</p>
+<p>消息转发机制,步骤如下图:</p>
+<p><img src="https://github.com/ReaperLC/Hello-World/blob/master/resource/msg.png?raw=true" alt></p>
+<pre><code class="bash">//第一次 动态方法解析
++(BOOL)resolveInstanceMethod:(SEL)sel;
+//第二次 快速消息转发
+-(id)forwardingTargetForSelector:(SEL)aSelector;
+//第三次 标准消息转发 重定向
+-(void)forwardInvocation:(NSInvocation *)anInvocation;
+//消息中转中心
+-(NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;
+</code></pre>
+<h2 id="动态修改变量"><a href="#动态修改变量" class="headerlink" title="动态修改变量"></a>动态修改变量</h2><pre><code class="bash">/** 1.动态修改变量（私有变量也可修改)*/
+- (void)dynamicModifyVariable {
+    NSLog(@&quot;修改前姓名为:%@&quot;, [p valueForKey:@&quot;age&quot;]);
+    unsigned int count = 0;
+    // 获取类的成员变量列表(包括私有) 获取属性，方法，协议列表 类似
+    Ivar *varList = class_copyIvarList([Person class], &amp;count);
+    for (int i = 0; i &lt; count; i++) {
+        Ivar var = varList[i];
+        const char *varName = ivar_getName(var);
+        NSString *proname = [NSString stringWithUTF8String:varName];
+        NSLog(@&quot;查看成员变量:%@&quot;,proname);
+        if ([proname isEqualToString:@&quot;_age&quot;]) {
+            object_setIvar(p, var, @&quot;22&quot;);
+//            [p setValue:@&quot;22&quot; forKey:@&quot;age&quot;];
+        }
+    }
+    NSLog(@&quot;修改后姓名为:%@&quot;, [p valueForKey:@&quot;age&quot;]);
 }
 </code></pre>
-<p><code>shouldAutorotate</code> 返回<code>YES</code>，则表明此页面是支持旋转的，但最终是否会旋转取决于其上级，身不由己。</p>
-<p>就上面的讲优先级的时候，说到的层级，具体实现可以如下：</p>
-<blockquote>
-<p>UITabbarController</p>
-</blockquote>
-<pre><code>//是否自动旋转
--(BOOL)shouldAutorotate{
-    return self.selectedViewController.shouldAutorotate;
+<h2 id="动态添加方法"><a href="#动态添加方法" class="headerlink" title="动态添加方法"></a>动态添加方法</h2><p>分类不能增加方法,Extension 可以</p>
+<pre><code class="bash">//1、注册方法
+SEL getInformationSelector = sel_registerName(&quot;getPersonAllInfo&quot;);
+//2、添加方法
+class_addMethod([Person class], getInformationSelector, (IMP)getInformation, &quot;v@&quot;);
+</code></pre>
+<h2 id="动态拦截与替换方法"><a href="#动态拦截与替换方法" class="headerlink" title="动态拦截与替换方法"></a>动态拦截与替换方法</h2><p>拦截系统自带方法的调用(Swizzle黑魔法),也可以理解为替换系统方法<br>使用场景:比如数据埋点,搜集某些页面进入次数,或者按钮点击次数,在不改变原有结构的前提下,使用拦截方法可以实现无侵入式埋点或者其他功能, 但是方法拦截需要慎重使用,可能牵一发而动全身.</p>
+<pre><code class="bash">+(void)load {
+    [super load];
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        //获取方法名
+        SEL origSel = @selector(sendAction:to:forEvent:);
+        SEL swizSel = @selector(ept_sendAction:to:forEvent:);
+        Method origMethod = class_getInstanceMethod([self class], origSel);
+        Method swizMethod = class_getInstanceMethod([self class], swizSel);
+        //判断方法是否添加成功
+        BOOL addMethod = class_addMethod([self class], origSel, method_getImplementation(swizMethod), method_getTypeEncoding(swizMethod));
+        if (addMethod) {
+            //替换类中已有方法的实现,如果该方法不存在添加该方法
+            class_replaceMethod([self class], swizSel, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+        }else{
+            //替换Method
+            method_exchangeImplementations(origMethod, swizMethod);
+        }
+    });
 }
-
-//支持哪些屏幕方向
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return [self.selectedViewController supportedInterfaceOrientations];
-}
-
-//默认方向
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    return [self.selectedViewController preferredInterfaceOrientationForPresentation];
-}
-</code></pre><blockquote>
-<p>UINavigationController</p>
-</blockquote>
-<pre><code class="//是否自动旋转">//返回导航控制器的顶层视图控制器的自动旋转属性，因为导航控制器是以栈的原因叠加VC的
-//topViewController是其最顶层的视图控制器，
--(BOOL)shouldAutorotate{
-    return self.topViewController.shouldAutorotate;
-}
-
-//支持哪些屏幕方向
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return [self.topViewController supportedInterfaceOrientations];
-}
-
-//默认方向
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    return [self.topViewController preferredInterfaceOrientationForPresentation];
+- (void)ept_sendAction:(SEL)action to:(id)target forEvent:(UIEvent *)event{
+    [self ept_sendAction:action to:target forEvent:event];
+    NSLog(@&quot;拦截系统点击方法成功,调用ept_sendAction&quot;);
 }
 </code></pre>
-<h2 id="强制旋转"><a href="#强制旋转" class="headerlink" title="强制旋转"></a>强制旋转</h2><p>假如控制中心的锁定开启，那么此时如上代码中的设置已经无法起到控制作用了，而且以下的旋转监听也无法拦截到任何信息,因为此时屏幕无法旋转。</p>
-<pre><code>[[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(didChangeRotate:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+<p>动态拦截替换方法常用函数:</p>
+<blockquote>
+<p><strong><font color="#2E8B57">1、class_getInstanceMethod 获取方法名<br>2、class_addMethod 判断方法是否添加成功<br>3、class_replaceMethod 替换类中已有方法的实现,如果该方法不存在添加该方法<br>4、method_exchangeImplementations 替换Method</font></strong></p>
+</blockquote>
+<h2 id="动态添加属性"><a href="#动态添加属性" class="headerlink" title="动态添加属性"></a>动态添加属性</h2><pre><code class="bash">// 重写set和get方法 设置关联
+- (NSString *)mobile {
+    return objc_getAssociatedObject(self, &quot;mobile&quot;);
+}
+- (void)setMobile:(NSString *)mobile {
+    objc_setAssociatedObject(self, &quot;mobile&quot;, mobile, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+} 
+</code></pre>
+<p>重写set和get方法,设置关联属性</p>
+<blockquote>
+<p>/*<em><br> 第一个参数:当前对象<br> 第二个参数:新增属性键值
+ </em>/</p>
+</blockquote>
+<pre><code class="bash">objc_getAssociatedObject(id _Nonnull object, const void * _Nonnull key)
+</code></pre>
+<blockquote>
+<p>/*<em><br> 第一个参数id object, 当前对象<br> 第二个参数const void </em>key, 关联的key，是c字符串<br> 第三个参数id value, 被关联的对象的值<br> 第四个参数objc_AssociationPolicy policy关联引用的规则<br> */</p>
+</blockquote>
+<pre><code class="bash">objc_setAssociatedObject(id _Nonnull object, const void * _Nonnull key,id _Nullable value, objc_AssociationPolicy policy)
+</code></pre>
+<h2 id="自动化归解档"><a href="#自动化归解档" class="headerlink" title="自动化归解档"></a>自动化归解档</h2><p>归解档遵循<font color="#2E8B57">NSCoding</font>协议即可,实现归档和解档即可</p>
+<pre><code class="bash">#pragma mark - coding
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder;
+</code></pre>
+<p>对于自定义类型的归解档,最原始的方法就是挨个属性去归档、解档,但是当你要归档的对象永远数亿属性资产的时候,很显然最原始的方法已经无法满足我们对于效率的诉求,从而就有了自动化归解档的诞生</p>
+<p>分别在两个方法去遍历成员变量,取值、设值</p>
+<pre><code class="bash">#pragma mark - coding
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+
+    /**
+     传统做法:挨个属性去归档
+     但是当遇到n多属性的时候 显然一个个去归档就很繁琐了
+     */
+//    [aCoder encodeObject:self.name forKey:@&quot;name&quot;];
+//    [aCoder encodeObject:self.sex forKey:@&quot;sex&quot;];
+//    [aCoder encodeObject:self.friends forKey:@&quot;friends&quot;];
 
 
-- (void)didChangeRotate:(NSNotification*)notice {
-    if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait){
-        //竖屏
-    } else {   
+    unsigned int count = 0;
+
+    Ivar *ivarList = class_copyIvarList([Person class], &amp;count);
+    for (int i = 0; i &lt; count; i ++) {
+        Ivar ivar = ivarList[i];                     // 从成员列表中取出成员变量
+        const char *name = ivar_getName(ivar);       // 获取成员变量名
+        // 进行归档
+        NSString *key = [NSString stringWithUTF8String:name];
+        id value = [self valueForKey:key];
+        [aCoder encodeObject:value forKey:key];
     }
+    free(ivarList);
 }
-</code></pre><p>那么如果需要部分页面仍然能旋转切换，此时我们就要借助<code>CoreMotion</code>，根据陀螺仪计算判断当前屏幕的横竖屏状态，然后去强制切换。具体强制切换横竖屏的代码如下：</p>
-<pre><code>- (void)interfaceOrientation:(UIInterfaceOrientation)orientation {
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector             = NSSelectorFromString(@&quot;setOrientation:&quot;);
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val                  = orientation;
-        [invocation setArgument:&amp;val atIndex:2];
-        [invocation invoke];
+</code></pre>
+<p>获取成员变量,赋值成员变量</p>
+<pre><code class="bash">- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder{
+    self = [super init];
+    if (self) {
+
+//        _name = [aDecoder decodeObjectForKey:@&quot;name&quot;];
+//        _sex = [aDecoder decodeObjectForKey:@&quot;sex&quot;];
+//        _friends = [aDecoder decodeObjectForKey:@&quot;friends&quot;];
+
+        unsigned int count = 0;
+        Ivar *ivarList = class_copyIvarList([Person class], &amp;count);
+        for (int i = 0; i &lt; count; i++) {
+            Ivar ivar = ivarList[i];                        // 从成员列表中取出成员变量
+            const char *name = ivar_getName(ivar);       // 获取成员变量名
+            // 进行解档
+            NSString *key = [NSString stringWithUTF8String:name];
+            id value = [aDecoder decodeObjectForKey:key];
+            // 将值赋值给成员变量
+            [self setValue:value forKey:key];
+        }
+        free(ivarList);
     }
+    return self;
 }
-</code></pre><p>后续我们就需要根据<code>CoreMotion</code>去判断状态，将屏幕状态传给上述方法，即可在锁定状态下的很竖屏主动切换。此处监控的代码具体可前往<code>github</code>查看，【<a href="https://github.com/ixmwl/BlogResource/tree/master/屏幕旋转/DeviceOrientation" target="_blank" rel="noopener">传送门</a>】</p>
+</code></pre>
+<h2 id="字典转模型"><a href="#字典转模型" class="headerlink" title="字典转模型"></a>字典转模型</h2>
     </div>
   </div>
   
@@ -376,8 +411,8 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/iOS-屏幕旋转/">
-              #iOS/屏幕旋转
+            <a href="/tags/iOS-Runtime/">
+              #iOS/Runtime
             </a>
           </span>
           
@@ -402,9 +437,15 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/09/26/iOS开发/iOS13适配问题/" target="_self">iOS13适配问题汇总</a>
+        <a href="/2019/03/25/iOS开发/更轻量级的ViewController/" target="_self">更轻量级的ViewController</a>
       </div>
     
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2019/03/30/版本管理/Git常用命令汇总/" target="_self">Git常用命令汇总</a>
+        <i class="iconfont icon-next"></i>
+      </div>
     
   </nav>
 
