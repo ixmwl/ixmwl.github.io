@@ -1,236 +1,173 @@
+<html>
 <!DOCTYPE html>
-<html lang="zh-CN">
-<link rel="stylesheet" href="/highlight/styles/xcode.css">
-<script src="/highlight/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-<!-- 爆炸红心效果 -->
-<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas>
-<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
-<script type="text/javascript" src="/js/firework.js"></script>
+<html >
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>CSS基础--选择器 | Simone</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
-  
-  
-  
-  <title>CSS基础--选择器 | 夏末的杂货铺</title>
+    <meta name="description" content="我是浪迹天涯的游子，爱这山河之间的诗词。">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="CSS基础--选择器 | Simone">
+    <meta name="twitter:description" content="我是浪迹天涯的游子，爱这山河之间的诗词。">
 
-  
-    <meta name="keywords" content="前端,选择器,">
-  
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CSS基础--选择器 | Simone">
+    <meta property="og:description" content="我是浪迹天涯的游子，爱这山河之间的诗词。">
 
-  <script>
-    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
-  </script>
+    
+    <meta name="author" content="ixmwl">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
-  
+    
+    <link rel="icon" href="/images/avatar-small.png">
+    
 
-  
+    <meta name="generator" content="hexo"/>
+    
 
-  
-    <link rel="icon" href="/images/favicon.ico">
-    <link rel="apple-touch-icon" href="/images/touch-icon.png">
-  
+    <link rel="canonical" href="http://yoursite.com/2019/04/14/前端/CSS/CSS基础-选择器/"/><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/icon/iconfont.css">
-<link rel="stylesheet" href="/css/github-markdown.css">
-<link rel="stylesheet" href="/css/highlight.css">
-
-  <script src="/js/util.js"></script>
-<script src="/js/valine.min.js"></script>
-
-  
-
-  
-    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
-  
-
-  
-  
-  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
-  
-  
-    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
-  
-
+                 
 </head>
 
-<body>
-
-  
-
-  <div id="app">
-
-    <div class="header-wrap">
-  <header>
-    <div class="site-brand">
-      <div class="site-title">
-        <a href="/">夏末的杂货铺</a>
-      </div>
-    </div>
-    <nav class="site-navigation">
-      <ul class="nav-menu">
-      
-        <li class="nav-item" data-path="/">
-          
-            <a href="/" target="_self">
-              主页
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/archives/">
-          
-            <a href="/archives/" target="_self">
-              归档
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/categories/">
-          
-            <a href="/categories/" target="_self">
-              分类
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/tags/">
-          
-            <a href="/tags/" target="_self">
-              标签
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/friends/">
-          
-            <a href="/friends/" target="_self">
-              友链
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/about/">
-          
-            <a href="/about/" target="_self">
-              关于
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path>
-          
-            <a href="javascript:void(0);" v-else>抓到我</a>
-            <ul class="nav-menu--dropdown">
-              
-                <li>
-                  <a href="https://github.com/ixmwl" target="_blank">
-                    Github
-                  </a>
-                </li>
-              
-                <li>
-                  <a href="https://gitee.com/ixmwl" target="_blank">
-                    码云
-                  </a>
-                </li>
-              
-            </ul>
-          
-        </li>
-      
-      </ul>
-    </nav>
-    <i class="iconfont icon-menu"></i>
-  </header>
-</div>
-
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
 <script>
-  let links = document.querySelectorAll('.nav-item');
-  for(let link of links){
-    let childrenLink = link.querySelector('ul');
-    link.addEventListener('mouseenter', () => {
-      if(childrenLink) {
-        childrenLink.className = "nav-menu--dropdown active";
-      }
-    })
-    link.addEventListener('mouseleave', () => {
-      if(childrenLink) {
-        childrenLink.className = "nav-menu--dropdown";
-      }
-    })
-  }
-  let rootRealPath = getRealPath(window.location.pathname, true);
-  for(let link of links) {
-    let linkPath = link.getAttribute("data-path");
-    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
-      link.className = "nav-item hover";
-    }
-  }
-
-  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
-    iconMenuClicked = false;
-  let navDOM = document.querySelector("nav.site-navigation");
-  iconMenu.addEventListener("click", () => {
-    iconMenuClicked 
-      ? navDOM.className = "site-navigation active"
-      : navDOM.className = "site-navigation";
-    iconMenuClicked = !iconMenuClicked;
-  })
+    // highlight
+    hljs.initHighlightingOnLoad();
 </script>
 
-    
+<!-- <script>
+    $('pre code').each(function (i, block) {
+        //hljs.highlightBlock(block);
+        var lines = $(this).text().split('\n').length - 1;
+        var $numbering = $('<ul/>').addClass('pre-numbering');
+        $(this)
+            .addClass('has-numbering')
+            .parent()
+            .append($numbering);
+        for (i = 1; i <= lines; i++) {
+            $numbering.append($('<li/>').text(i));
+        }
+    });
+</script> -->
 
-
-
-
-
-
-
-
-<div class="container post-index">
-
-  
-
-<div class="post">
-  <h1 class="article-title">
-    <span>CSS基础--选择器</span>
-  </h1>
-  <div class="article-top-meta">
-    <span>
-      发布 : 
-      2019-04-14
+<body class="home-template no-js">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
     </span>
+
     
-      <span>
-        分类 : 
-          <a href="/categories/前端/">
-            前端
-          </a>
-      </span>
-    
-    
-      <span>
-        浏览 : <span class="article-timer" data-identity="CSS基础-选择器"></span>
-      </span>
-    
-  </div>
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 Simone 的主页"><img src="/images/favicon.ico" width="80" alt="Simone logo" class="panel-cover__logo logo"></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for Simone">Simone</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">你若无畏，何惧艰难。</span>
+        
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">我是浪迹天涯的游子，爱这山河之间的诗词。</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="Visit the blog" class="blog-button">文字阁</a></li>
+            
+              <li class="navigation__item"><a href="/archives">时光机</a></li>
+            
+              <li class="navigation__item"><a href="/about">关于我</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/ixmwl" title="GitHub" target="_blank">
+      <i class="social fa fa-github"></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
 
   
 
-  <div class="article-content">
-    <div class="markdown-body">
-      <p></p>
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-purple"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-04-14T13:23:00.000Z" class="post-list__meta--date date">2019-04-14</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="tag-link" href="/tags/前端-选择器/">前端/选择器</a>
+ </span>
+      <span class="page-pv">
+       Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">CSS基础--选择器</h1>
+  </header>
+
+  <section class="post">
+    <p>要使用css对HTML页面中的元素实现一对一，一对多或者多对一的控制，这就需要用到CSS选择器。<br>HTML页面中的元素就是通过CSS选择器进行控制的。除了基础选择器以外，为了能更方便快捷的定位到元素，css里面还提供了很多其他选择器，熟练掌握想必可以极大的提高编码能力，因此此处就另开一篇探索学习下选择器的相关问题。</p>
+<a id="more"></a>
+
 <h2 id="选择器是什么？"><a href="#选择器是什么？" class="headerlink" title="选择器是什么？"></a>选择器是什么？</h2><p>每一条css样式定义由两部分组成，形式如下： </p>
-<pre><code>选择器{样式}
-</code></pre><p>在{}之前的部分就是“选择器”。 “选择器”指明了{}中的“样式”的作用对象，也就是“样式”作用于网页中的哪些元素</p>
+<pre><code>选择器{样式}</code></pre><p>在{}之前的部分就是“选择器”。 “选择器”指明了{}中的“样式”的作用对象，也就是“样式”作用于网页中的哪些元素</p>
 <h2 id="基础选择器"><a href="#基础选择器" class="headerlink" title="基础选择器"></a>基础选择器</h2><h3 id="标签选择器"><a href="#标签选择器" class="headerlink" title="标签选择器"></a>标签选择器</h3><p>之前html介绍中有总结一个常用的标签表格，此处再写一遍，加深下记忆</p>
 <table>
 <thead>
@@ -239,8 +176,7 @@
 <th>标签作用</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>html</td>
 <td>包裹所有的其他标签，是html最外层的元素</td>
 </tr>
@@ -300,8 +236,7 @@
 <td>a</td>
 <td>表示超链接，可以链接一切资源（包括网址 视频 文字 等等）<br><strong>href属性</strong>：  超链接的地址 <br><strong>target属性</strong>： _blank 表示新建一个浏览器标签页来显示超链接的内容，不会覆盖原来的网页</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>此处的标签选择器要用到的就是上面表格中展示的标签了，所以根据css样式定义会有如下例子：</p>
 <pre><code>&lt;head&gt;
     &lt;title&gt;css&lt;/title&gt;
@@ -313,8 +248,7 @@
 &lt;/head&gt;
 &lt;body&gt;
    &lt;p&gt;css&lt;/p&gt;
-&lt;/body&gt;
-</code></pre><p>在head的样式中<code>p</code>就是标签，这种设置会针对全局的<code>p</code>标签，如果其他标签未设置样式则都会沿用这个标签选择器的样式</p>
+&lt;/body&gt;</code></pre><p>在head的样式中<code>p</code>就是标签，这种设置会针对全局的<code>p</code>标签，如果其他标签未设置样式则都会沿用这个标签选择器的样式</p>
 <p><strong>「总结」</strong></p>
 <blockquote>
 <ol>
@@ -331,12 +265,10 @@
             border: 3px dashed green;
         }
     &lt;/style&gt;
-&lt;/head&gt;
-</code></pre><p>然后在<code>body</code>中如果需要用到此样式，直接将这个<code>id</code>赋给标签即可</p>
+&lt;/head&gt;</code></pre><p>然后在<code>body</code>中如果需要用到此样式，直接将这个<code>id</code>赋给标签即可</p>
 <pre><code>&lt;body&gt;
     &lt;p id=&quot;csstitle&quot;&gt;css&lt;/p&gt;
-&lt;/body&gt;
-</code></pre><p><strong>「总结」</strong><br>任何的HTML标签都可以有<code>id</code>属性。表示这个标签的名字。这个标签的名字，可以任取，但是：</p>
+&lt;/body&gt;</code></pre><p><strong>「总结」</strong><br>任何的HTML标签都可以有<code>id</code>属性。表示这个标签的名字。这个标签的名字，可以任取，但是：</p>
 <blockquote>
 <ol>
 <li>只能有字母、数字、下划线。</li>
@@ -362,8 +294,7 @@
 
 &lt;body&gt;
     &lt;p id=&quot;csstitle&quot;&gt;css&lt;/p&gt;
-&lt;/body&gt;
-</code></pre><p>如上所述，标签选择器和ID选择器都作用于<code>p</code>标签上</p>
+&lt;/body&gt;</code></pre><p>如上所述，标签选择器和ID选择器都作用于<code>p</code>标签上</p>
 <h3 id="类选择器"><a href="#类选择器" class="headerlink" title="类选择器"></a>类选择器</h3><p><code>css</code>中用<code>.</code>来定义类选择器,和id非常相似，任何的标签都可以携带<code>id</code>属性和<code>class</code>属性,可以灵活的作用于你所想要的所有标签上。</p>
 <pre><code>&lt;head&gt;
     &lt;title&gt;Document&lt;/title&gt;
@@ -374,12 +305,10 @@
         }
     &lt;/style&gt;
 &lt;/head&gt;
-
 </code></pre><p>根据每个标签都有<code>class</code>属性，那么我们可以在别处使用<code>class</code>来引用这个样式</p>
 <pre><code>&lt;body&gt;
     &lt;p class=&quot;sub-title&quot;&gt;css&lt;/p&gt;
-&lt;/body&gt;
-</code></pre><blockquote>
+&lt;/body&gt;</code></pre><blockquote>
 <ol>
 <li>类选择器可以被多种标签使用</li>
 <li>同一个标签可以使用多个类选择器，用空格分开即可，如 <code>&lt;h class=&quot;classone  classtwo&quot;&gt;我是一个标题啊&lt;/h&gt;</code></li>
@@ -409,8 +338,7 @@
 &lt;body&gt;
     &lt;h1&gt;相邻选择器测试&lt;/h1&gt;
     &lt;div id=&quot;box1&quot;&gt;&lt;/div&gt;
-&lt;/body&gt;
-</code></pre><h3 id="多元素选择器"><a href="#多元素选择器" class="headerlink" title="多元素选择器"></a>多元素选择器</h3><p>当几个元素有共同属性的时候，可以使用多元素选择器，也就是同时为多个元素设置样式，用<code>,</code>逗号隔开</p>
+&lt;/body&gt;</code></pre><h3 id="多元素选择器"><a href="#多元素选择器" class="headerlink" title="多元素选择器"></a>多元素选择器</h3><p>当几个元素有共同属性的时候，可以使用多元素选择器，也就是同时为多个元素设置样式，用<code>,</code>逗号隔开</p>
 <pre><code>&lt;head&gt;
     &lt;title&gt;多元素选择器&lt;/title&gt;
     &lt;style type=&quot;text/css&quot;&gt;
@@ -418,8 +346,7 @@
             background-color: red;
         }
     &lt;/style&gt;
-&lt;/head&gt;
-</code></pre><h3 id="后代选择器"><a href="#后代选择器" class="headerlink" title="后代选择器"></a>后代选择器</h3><p>后代选择器作用于父元素下的所有子元素，用<code>空格</code>隔开</p>
+&lt;/head&gt;</code></pre><h3 id="后代选择器"><a href="#后代选择器" class="headerlink" title="后代选择器"></a>后代选择器</h3><p>后代选择器作用于父元素下的所有子元素，用<code>空格</code>隔开</p>
 <pre><code>&lt;head&gt;
     &lt;title&gt;后代选择器&lt;/title&gt;
     &lt;style type=&quot;text/css&quot;&gt;
@@ -437,8 +364,7 @@
             &lt;p&gt;这是另一个div下的p 标签&lt;/p&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-&lt;/body&gt;
-</code></pre><p>如上可以把<code>id</code>为<code>box</code>的<code>div</code>下的所有<code>p</code>标签背景设置为红色，包括<code>id</code>为<code>box1</code>的<code>div</code>下的<code>p</code>标签。</p>
+&lt;/body&gt;</code></pre><p>如上可以把<code>id</code>为<code>box</code>的<code>div</code>下的所有<code>p</code>标签背景设置为红色，包括<code>id</code>为<code>box1</code>的<code>div</code>下的<code>p</code>标签。</p>
 <p><strong>「总结」</strong></p>
 <blockquote>
 <p>两个标签不一定是连续紧挨着的，只要保持一个后代的关联即可。也就是说，选择的是后代，不一定是子代，也可能是孙代。</p>
@@ -461,8 +387,7 @@
             &lt;p&gt;这是另一个div下的p 标签&lt;/p&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-&lt;/body&gt;
-</code></pre><p>此作用结果就是id为box的子代p标签背景都变成红色，但是id为box1的div中的p孙代标签背景是没有被设置的。</p>
+&lt;/body&gt;</code></pre><p>此作用结果就是id为box的子代p标签背景都变成红色，但是id为box1的div中的p孙代标签背景是没有被设置的。</p>
 <h3 id="属性选择器"><a href="#属性选择器" class="headerlink" title="属性选择器"></a>属性选择器</h3><p><code>E[attr]</code>匹配所有具有<code>attr</code>属性的<code>E</code>元素，不考虑他的值，例如：<code>input[name]</code>,只要有<code>name</code>属性的<code>input</code>元素都会被选中。</p>
 <pre><code>&lt;head&gt;
     &lt;title&gt;后代选择器&lt;/title&gt;
@@ -479,13 +404,11 @@
         &lt;input type=&quot;text&quot; name=&quot;input2&quot;&gt;
         &lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt;
     &lt;/form&gt;
-&lt;/body&gt;
-</code></pre><p>运行结果，拥有name属性的两个input元素边框被设置成了红色，最后一个并没有。</p>
+&lt;/body&gt;</code></pre><p>运行结果，拥有name属性的两个input元素边框被设置成了红色，最后一个并没有。</p>
 <h3 id="伪类和伪元素"><a href="#伪类和伪元素" class="headerlink" title="伪类和伪元素"></a>伪类和伪元素</h3><p><code>伪类</code>是添加到选择器的关键字，指定要选择的元素的特殊状态。例如，:<code>hover</code> 可被用于在用户将鼠标悬停在按钮上时改变按钮的颜色。语法如下：</p>
 <pre><code>selector:pseudo-class {
   property: value;
-}
-</code></pre><h4 id="a标签的4种状态"><a href="#a标签的4种状态" class="headerlink" title="a标签的4种状态"></a>a标签的4种状态</h4><blockquote>
+}</code></pre><h4 id="a标签的4种状态"><a href="#a标签的4种状态" class="headerlink" title="a标签的4种状态"></a>a标签的4种状态</h4><blockquote>
 <p><code>link</code>:未访问链接<br><code>hover</code>:鼠标放上状态，鼠标放到某个标签上的时候<br><code>visited</code>:已访问链接，<br><code>active</code>:当前活动链接，点击某个标签没有松鼠标时</p>
 </blockquote>
 <p>CSS允许对于元素的不同状态，定义不同的样式信息。伪类选择器又分为两种：</p>
@@ -509,8 +432,7 @@
         &lt;p&gt;百度以下，就知道了！&lt;/p&gt;
         &lt;a href=&quot;https://www.pgyer.com&quot;&gt;蒲公英分发平台&lt;/a&gt;
     &lt;/form&gt;
-&lt;/body&gt;
-</code></pre><p> 例如上面的代码就是在<code>a</code>标签<code>前后</code>添加了点我和警告 </p>
+&lt;/body&gt;</code></pre><p> 例如上面的代码就是在<code>a</code>标签<code>前后</code>添加了点我和警告 </p>
 <p><strong>「总结」</strong></p>
 <ol>
 <li>伪元素不属于文档，所以js无法操作它</li>
@@ -518,367 +440,114 @@
 <li><code>优点</code>：减少dom节点、让css帮助解决部分js问题，让问题变得简单</li>
 <li><code>缺点</code>：不利于SEO，无法审查元素，不利于调试</li>
 </ol>
-    </div>
-  </div>
-  
-  
-  
 
-  
+  </section>
 
-  <div class="article-footer">
-    <div class="article-meta pull-left">
-      <span>
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Newer Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2019/05/10/前端/JS/JavaScript基础--数据类型&类型转换/" title="JavaScript基础--数据类型&amp;类型转换">JavaScript基础--数据类型&amp;类型转换</a></h2>
+                <p class="excerpt">
+                
+                JavaScript（简称“JS”） 是一种具有函数优先的轻量级，解释型或即时编译型的编程语言。虽然它是作为开发Web页面的脚本语言而出名的，但是它也被用到了很多非浏览器环境中，JavaScript 基于原型编程、多范式的动态脚本语言，并且支持面向对象、命令式和声明式（如函数式编程）风格。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-05-10T11:11:00.000Z" class="post-list__meta--date date">2019-05-10</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/前端-JS/">前端/JS</a>
+</span><a class="btn-border-small" href="/2019/05/10/前端/JS/JavaScript基础--数据类型&类型转换/">继续阅读</a></div>
+                           
+            </div>
         
-          <i class="iconfont icon-06tags"></i>标签: 
-          
-          <span class="span--tag">
-            <a href="/tags/选择器/">
-              #选择器
-            </a>
-          </span>
-          
         
-      </span>
-    </div>
-    <div class="article-meta pull-right">
-    </div>
-  </div>
-</div>
-
-
-  <aside id="sidebar">
-    <p id="sidebar-header"></p>
-    <ol id="sidebar-toc"></ol>
-  </aside>
-  <script async>setTimeout(generateToc, 10);</script>
-
-
-  <nav class="post-navigation">
-    
-      <div class="nav-pre">
-        <i class="iconfont icon-prev"></i>
-        上一篇:
-        <a href="/2019/04/14/前端/CSS/CSS基础/" target="_self">CSS基础学习</a>
-      </div>
-    
-    
-      <div class="nav-next">
-        下一篇:
-        <a href="/2019/04/14/前端/CSS/CSS基础-定位&amp;布局/" target="_self">CSS基础-布局&定位</a>
-        <i class="iconfont icon-next"></i>
-      </div>
-    
-  </nav>
-
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2019/04/14/前端/CSS/CSS基础/" title="CSS基础学习">CSS基础学习</a></h2>
+                <p class="excerpt">
+                
+                层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记语言的一个应用）或XML（标准通用标记语言的一个子集）等文件样式的计算机语言。CSS不仅可以静态地修饰网页，还可以配合各种脚本语言动态地对网页各元素进行格式化。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-04-14T13:23:00.000Z" class="post-list__meta--date date">2019-04-14</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/前端-CSS/">前端/CSS</a>
+</span><a class="btn-border-small" href="/2019/04/14/前端/CSS/CSS基础/">继续阅读</a></div>
+                       
+            </div>
+        
+     
    
+   
+  
+</section>
 
   
-    <script defer>
-const valineAPI = (() => {
-  try {
-    AV.init("EU3pLs6R8jtqeOfcoQXrKyir-gzGzoHsz", "qJ21vb6aSD16W6NcEnBBmpa0");
-  } catch(error) {}
-  const isExist = (identity) => {
-    identity = identity || getRealPath();
-    let query = new AV.Query('Timer');
-    return new Promise((resolve, reject) => {
-      query.equalTo("identity", identity);
-      query.find().then(results => {
-        resolve(results.length > 0);
-      }, error => reject(error));
-    })
-  }
 
-  const _get = (identity) => {
-    let query = null;
-    if(identity && identity instanceof Array){
-      let querys = [];
-      for(let i = 0; i < identity.length; ++i) {
-        querys[i] = new AV.Query('Timer');
-        querys[i].equalTo('identity', identity[i]);
-      }
-      query = AV.Query.or.apply(null ,querys);
-    } else {
-      identity = identity || getRealPath();
-      query = new AV.Query("Timer");
-      query.equalTo("identity", identity);
-    }
-
-    return new Promise((resolve, reject) => {
-      query.find()
-      .then(results => resolve(results))
-      .catch(error => reject(error))
-    })
-  }
-
-  const create = (identity) => {
-    identity = identity || getRealPath();
-    return new Promise((resolve, reject) => {
-      let Todo = AV.Object.extend('Timer');
-      let todo = new Todo();
-      todo.set("times", 1);
-      todo.set("identity", identity);
-      todo.save().then(res => resolve(true), error => reject(error));
-    })
-  }
-
-  const update = (identity) => {
-    identity = identity || getRealPath();
-    return new Promise((resolve, reject) => {
-      let query = new AV.Query('Timer');
-      query.equalTo("identity", identity);
-      query.find().then(todos => {
-        todos.forEach(todo => {
-          todo.set("times", todo.attributes.times + 1);
-        });
-        return AV.Object.saveAll(todos);
-      }).then(todos => resolve(true), error => reject(error));
-    })
-  }
-
-  return {
-    isExist,
-    _get,
-    update,
-    create
-  }
-})()
-
-const calcAndWriteTimes = () => {
-  let isPost = true;
-
-  let timerAllDOM = document.querySelectorAll(".article-timer");
-
-  if(isPost) {
-    let identity = timerAllDOM[0].getAttribute("data-identity");
-    valineAPI.isExist(identity)
-    .then(exist => {
-      if(exist) {
-        return valineAPI.update(identity);
-      }
-      return new Promise(resolve => resolve(true));
-    })
-    .then( succuess => valineAPI._get(identity))
-    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
-    .catch(error => console.log(error.message))
-    return ;
-  }
-
-  let timerDOMCache = {};
-
-  for(let timerDOM of timerAllDOM) {
-    let identity = timerDOM.getAttribute("data-identity");
-    if(timerDOMCache.hasOwnProperty(identity)){
-      timerDOMCache[identity].dom.push(timerDOM);
-    }else{
-      timerDOMCache[identity] = {
-        dom: [timerDOM],
-        times: undefined
-      };
-    }
-  }
-
-  let identities = Object.keys(timerDOMCache);
-  valineAPI._get(identities).then(results => {
-    for(let result of results) {
-      let {identity, times} = result.attributes;
-      timerDOMCache[identity].times = times;
-      timerDOMCache[identity].dom.map(item => item.innerText = times);
-    }
-    for(let identity of identities) {
-      if(timerDOMCache[identity].times){
-        continue;
-      }
-      timerDOMCache[identity].dom.map(item => item.innerText = 1);
-      valineAPI.create(identity);
-    }
-  }).catch(error => console.log(error.message))
-}
-
-if(true){
-  calcAndWriteTimes();
-}
-</script>
-   
-
-</div>
-
-
-    <footer>
-  <p class="site-info">
-    <span>业精于勤，荒于嬉；行成于思，毁于随。</span>
-    <!-- 博客已运行<span id="time-to-now"></span> -->
-    <!-- <span class="my-face">(●'◡'●)ﾉ♥</span> -->
-    <br>
-      <a href>最困难的事情就是认识自己.</a>
-    <!-- Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a> -->
-    <br>
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2019 ixmwl - 知识 & 情怀 | 二者兼得。
+       
+    </span>
+    <span class="footer__copyright">
+             - 业精于勤，荒于嬉；行成于思，毁于随
+         </span>
+       
     
-  </p>
+    
 </footer>
 
 
+        </div>
+    </div>
 
+     
 <script>
-const timeToNowDOM = document.querySelector("#time-to-now");
-const startTimestamp = new Date(2019, 1, 10).getTime();
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-const updateTimeStr = () => {
-  let offset = parseInt(
-      (new Date().getTime() - startTimestamp) / 1000,
-      10
-    ),
-    day = Math.floor(offset / 86400),
-    hour = Math.floor((offset % 86400) / 3600),
-    minute = Math.floor(((offset % 86400) % 3600) / 60),
-    second = Math.floor(((offset % 86400) % 3600) % 60);
-  timeToNowDOM.innerHTML =
-    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
-  setTimeout(updateTimeStr, 500);
-}
-
-setTimeout(updateTimeStr, 500);
+	ga('create', 'UA-78918255-1', 'auto');
+	ga('send', 'pageview');
 </script>
 
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?9cdad07c755fa23f6aced510c6760e87";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 
-    <div class="back-to-top hidden">
-  <span>
-    <i class="iconfont icon-60"></i><span></span>%
-  </span>
-</div>
 
-<script>
-const updateIconToTop = percent => {
-  let dom = document.querySelector(".back-to-top span span");
-  dom.innerText = percent;
-  if(percent < 1) {
-    document.querySelector(".back-to-top").className = "back-to-top hidden";
-  } else {
-    document.querySelector(".back-to-top").className = "back-to-top";
-  }
-}
 
-const handleScoll = () => {
-  let isRunning = false;
-  return () => {
-    if (isRunning) return;
-    isRunning = true;
-    window.requestAnimationFrame(timestamp => {
-      let scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop,
-        scrollHeight =
-          document.documentElement.scrollHeight ||
-          document.body.scrollHeight,
-        clientHeight =
-          document.documentElement.clientHeight ||
-          document.body.clientHeight;
-      isRunning = false;
-      if (scrollTop <= 1) {
-        updateIconToTop(0);
-        return;
-      }
-      if (scrollTop + clientHeight >= scrollHeight) {
-        updateIconToTop(100);
-      } else {
-        updateIconToTop(parseInt(
-          100 * scrollTop / (scrollHeight - clientHeight),
-          10
-        ));
-      }
-    });
-  };
-}
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
 
-const backToTop = () => {
-  let scrollTop =
-      document.documentElement.scrollTop || document.body.scrollTop,
-    delay = 10,
-    time = 200;
-  if (scrollTop <= 20) {
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    return;
-  }
-  let step = Math.ceil(scrollTop * delay / time);
-  let timer = setInterval(() => {
-    scrollTop =
-      document.documentElement.scrollTop || document.body.scrollTop;
-    if (scrollTop - step <= 0) {
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      clearInterval(timer);
-    } else {
-      document.documentElement.scrollTop = scrollTop - step;
-      document.body.scrollTop = scrollTop - step;
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
     }
-  }, delay);
-}
-
-document.addEventListener("scroll", handleScoll(), false);
-
-document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
-
+  });
 </script>
 
-  </div>
-
-  
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
-<script>
-  (() => {
-    const mathjaxConfig = {
-      showProcessingMessages: false, //关闭js加载过程信息
-      messageStyle: "none", //不显示信息
-      jax: ["input/TeX", "output/HTML-CSS"],
-      tex2jax: {
-        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
-        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
-        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
-      },
-      "HTML-CSS": {
-        availableFonts: ["STIX", "TeX"], //可选字体
-        showMathMenu: false //关闭右击菜单显示
-      }
-    }
-
-    let mathjaxInterval = setInterval(() => {
-      if(!window.MathJax){
-        return;
-      }
-      window.MathJax.Hub.Config(mathjaxConfig)
-      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
-
-      clearInterval(mathjaxInterval)
-    }, 10)    
-  })()
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
-  
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
-  <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
-<script async>
-  let fancyTimer = setInterval(function(){
-    if(!window.$){
-      return;
-    }
-    $(document).ready(function() {
-      $(".post img").each(function () {
-        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
-          return;
-        }
-        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
-        var element = document.createElement("a");
-        $(element).attr("data-fancybox", "gallery");
-        $(element).attr("href", $(this).attr("src"));
-        $(this).wrap(element);
-      });
-      
-      clearInterval(fancyTimer);
-    });
-  }, 10);
-</script>
 
-  
 </body>
 
 </html>

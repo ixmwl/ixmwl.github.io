@@ -562,8 +562,7 @@
 <pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span>
 <span class="javascript">  hljs.configure({<span class="attr">classPrefix</span>: <span class="string">''</span>});</span>
 <span class="undefined">  hljs.initHighlightingOnLoad();</span>
-<span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
-</code></pre>
+<span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
 </li>
 <li><p><code>tabReplace</code> and <code>useBR</code> that were used in different places are also unified<br>into the global options object and are to be set using <code>configure(options)</code>.<br>This function is documented in our <a href="http://highlightjs.readthedocs.org/en/latest/api.html">API docs</a>. Also note that these<br>parameters are gone from <code>highlightBlock</code> and <code>fixMarkup</code> which are now also<br>rely on <code>configure</code>.</p>
 </li>
@@ -744,8 +743,7 @@
   &apos;string&apos;,
   &apos;number&apos;,
   {begin: &apos;\\n&apos;, end: hljs.IMMEDIATE_RE}
-]
-</code></pre><p>This is useful for auxiliary modes needed only in one place to define parsing.<br>Note that such modes often don’t have <code>className</code> and hence won’t generate a<br>separate <code>&lt;span&gt;</code> in the resulting markup. This is similar in effect to<br><code>noMarkup: true</code>. All existing languages have been refactored accordingly.</p>
+]</code></pre><p>This is useful for auxiliary modes needed only in one place to define parsing.<br>Note that such modes often don’t have <code>className</code> and hence won’t generate a<br>separate <code>&lt;span&gt;</code> in the resulting markup. This is similar in effect to<br><code>noMarkup: true</code>. All existing languages have been refactored accordingly.</p>
 <p>Test file test.html has at last become a real test. Now it not only puts the<br>detected language name under the code snippet but also tests if it matches the<br>expected one. Test summary is displayed right above all language snippets.</p>
 <h2 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h2><p>Fine people at <a href="http://yandex.com/">Yandex</a> agreed to host highlight.js on their big fast servers.<br><a href="http://softwaremaniacs.org/soft/highlight/en/download/">Link up</a>!</p>
 <h2 id="Version-5-10-—-“Paris”"><a href="#Version-5-10-—-“Paris”" class="headerlink" title="Version 5.10 — “Paris”."></a>Version 5.10 — “Paris”.</h2><p>Though I’m on a vacation in Paris, I decided to release a new version with a<br>couple of small fixes:</p>

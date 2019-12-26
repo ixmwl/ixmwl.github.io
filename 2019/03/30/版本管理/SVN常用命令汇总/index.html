@@ -1,664 +1,333 @@
+<html>
 <!DOCTYPE html>
-<html lang="zh-CN">
-<link rel="stylesheet" href="/highlight/styles/xcode.css">
-<script src="/highlight/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-<!-- 爆炸红心效果 -->
-<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas>
-<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
-<script type="text/javascript" src="/js/firework.js"></script>
+<html >
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>SVN常用命令汇总 | Simone</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
-  
-  
-  
-  <title>SVN常用命令汇总 | 夏末的杂货铺</title>
+    <meta name="description" content="我是浪迹天涯的游子，爱这山河之间的诗词。">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SVN常用命令汇总 | Simone">
+    <meta name="twitter:description" content="我是浪迹天涯的游子，爱这山河之间的诗词。">
 
-  
-    <meta name="keywords" content="版本管理,svn命令,">
-  
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SVN常用命令汇总 | Simone">
+    <meta property="og:description" content="我是浪迹天涯的游子，爱这山河之间的诗词。">
 
-  <script>
-    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
-  </script>
+    
+    <meta name="author" content="ixmwl">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
-  
+    
+    <link rel="icon" href="/images/avatar-small.png">
+    
 
-  
+    <meta name="generator" content="hexo"/>
+    
 
-  
-    <link rel="icon" href="/images/favicon.ico">
-    <link rel="apple-touch-icon" href="/images/touch-icon.png">
-  
+    <link rel="canonical" href="http://yoursite.com/2019/03/30/版本管理/SVN常用命令汇总/"/><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/icon/iconfont.css">
-<link rel="stylesheet" href="/css/github-markdown.css">
-<link rel="stylesheet" href="/css/highlight.css">
-
-  <script src="/js/util.js"></script>
-<script src="/js/valine.min.js"></script>
-
-  
-
-  
-    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
-  
-
-  
-  
-  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
-  
-  
-    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
-  
-
+                 
 </head>
 
-<body>
-
-  
-
-  <div id="app">
-
-    <div class="header-wrap">
-  <header>
-    <div class="site-brand">
-      <div class="site-title">
-        <a href="/">夏末的杂货铺</a>
-      </div>
-    </div>
-    <nav class="site-navigation">
-      <ul class="nav-menu">
-      
-        <li class="nav-item" data-path="/">
-          
-            <a href="/" target="_self">
-              主页
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/archives/">
-          
-            <a href="/archives/" target="_self">
-              归档
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/categories/">
-          
-            <a href="/categories/" target="_self">
-              分类
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/tags/">
-          
-            <a href="/tags/" target="_self">
-              标签
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/friends/">
-          
-            <a href="/friends/" target="_self">
-              友链
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path="/about/">
-          
-            <a href="/about/" target="_self">
-              关于
-            </a>
-          
-        </li>
-      
-        <li class="nav-item" data-path>
-          
-            <a href="javascript:void(0);" v-else>抓到我</a>
-            <ul class="nav-menu--dropdown">
-              
-                <li>
-                  <a href="https://github.com/ixmwl" target="_blank">
-                    Github
-                  </a>
-                </li>
-              
-                <li>
-                  <a href="https://gitee.com/ixmwl" target="_blank">
-                    码云
-                  </a>
-                </li>
-              
-            </ul>
-          
-        </li>
-      
-      </ul>
-    </nav>
-    <i class="iconfont icon-menu"></i>
-  </header>
-</div>
-
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
 <script>
-  let links = document.querySelectorAll('.nav-item');
-  for(let link of links){
-    let childrenLink = link.querySelector('ul');
-    link.addEventListener('mouseenter', () => {
-      if(childrenLink) {
-        childrenLink.className = "nav-menu--dropdown active";
-      }
-    })
-    link.addEventListener('mouseleave', () => {
-      if(childrenLink) {
-        childrenLink.className = "nav-menu--dropdown";
-      }
-    })
-  }
-  let rootRealPath = getRealPath(window.location.pathname, true);
-  for(let link of links) {
-    let linkPath = link.getAttribute("data-path");
-    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
-      link.className = "nav-item hover";
-    }
-  }
-
-  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
-    iconMenuClicked = false;
-  let navDOM = document.querySelector("nav.site-navigation");
-  iconMenu.addEventListener("click", () => {
-    iconMenuClicked 
-      ? navDOM.className = "site-navigation active"
-      : navDOM.className = "site-navigation";
-    iconMenuClicked = !iconMenuClicked;
-  })
+    // highlight
+    hljs.initHighlightingOnLoad();
 </script>
 
-    
+<!-- <script>
+    $('pre code').each(function (i, block) {
+        //hljs.highlightBlock(block);
+        var lines = $(this).text().split('\n').length - 1;
+        var $numbering = $('<ul/>').addClass('pre-numbering');
+        $(this)
+            .addClass('has-numbering')
+            .parent()
+            .append($numbering);
+        for (i = 1; i <= lines; i++) {
+            $numbering.append($('<li/>').text(i));
+        }
+    });
+</script> -->
 
-
-
-
-
-
-
-
-<div class="container post-index">
-
-  
-
-<div class="post">
-  <h1 class="article-title">
-    <span>SVN常用命令汇总</span>
-  </h1>
-  <div class="article-top-meta">
-    <span>
-      发布 : 
-      2019-03-30
+<body class="home-template no-js">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
     </span>
+
     
-      <span>
-        分类 : 
-          <a href="/categories/版本管理/">
-            版本管理
-          </a>
-      </span>
-    
-    
-      <span>
-        浏览 : <span class="article-timer" data-identity="SVN常用命令汇总"></span>
-      </span>
-    
-  </div>
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 Simone 的主页"><img src="/images/favicon.ico" width="80" alt="Simone logo" class="panel-cover__logo logo"></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for Simone">Simone</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">你若无畏，何惧艰难。</span>
+        
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">我是浪迹天涯的游子，爱这山河之间的诗词。</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="Visit the blog" class="blog-button">文字阁</a></li>
+            
+              <li class="navigation__item"><a href="/archives">时光机</a></li>
+            
+              <li class="navigation__item"><a href="/about">关于我</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/ixmwl" title="GitHub" target="_blank">
+      <i class="social fa fa-github"></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
 
   
 
-  <div class="article-content">
-    <div class="markdown-body">
-      <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1、集中式管理，管理方式在服务端配置好，客户端只需要同步提交即可，使用方便，操作简单，很容易就可以上手。<br>2、在服务端统一控制好访问权限，利用代码的安全管理。<br>3、所有的代码已服务端为准，代码一致性高。</p>
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-purple"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-03-30T01:12:00.000Z" class="post-list__meta--date date">2019-03-30</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="tag-link" href="/tags/svn命令/">svn命令</a>
+ </span>
+      <span class="page-pv">
+       Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">SVN常用命令汇总</h1>
+  </header>
+
+  <section class="post">
+    <p><code>SVN</code>是<code>Subversion</code>的简称，目前是<code>Apache</code>项目底下的一个开放源代码的版本控制系统，它的设计目标就是取代<code>CVS</code>，<code>SVN</code>是集中式管理。去过的公司也有用<code>SVN</code>版本管理，避免自己偶尔忘记，找不到地方查看命令，总结归档一下</p>
+<a id="more"></a>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1、集中式管理，管理方式在服务端配置好，客户端只需要同步提交即可，使用方便，操作简单，很容易就可以上手。<br>2、在服务端统一控制好访问权限，利用代码的安全管理。<br>3、所有的代码已服务端为准，代码一致性高。</p>
 <h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>1、所有操作都需要通过服务端进行同步，这会导致服务器性能要求比较高。如果服务器宕机了就无法提交代码了。<br>2、分支管理不灵活，svn分支是一个完整的目录，且这个目录拥有完整的实际文件，这些操作都是在服务端进行同步的，不是本地化操作，如果要删除分之，也是需要将远程的分支进行删除，这会导致大家都得同步。<br>3、需要联网。如果无法连接到SVN服务器，就无法提交自己的代码，更别说还原、对比等操作了。如果在内网还好，网速比较稳定，同步相对比较快，如果是通过外网同步，有可能就需要同步很久。</p>
 <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><code>Repository</code> (代码仓库, 保存代码的仓库)<br><code>Server</code> (服务器, 保存所有版本的代码仓库)<br><code>Client</code> (客户端, 只保存当前用户的代码仓库)<br>用户名&amp;密码 (访问代码仓库需要使用自己的用户名和密码,从而可以区分出不同人对代码做的修改)</p>
 <h2 id="基操"><a href="#基操" class="headerlink" title="基操"></a>基操</h2><p><code>checkout</code> (将服务器上面最新的代码下载到本地,”只需要做一次”)<br><code>update</code> (从服务器更新最新的代码,”每天上班都需要做的事情”)<br><code>commit</code> (将工作提交到服务器, “每天下班之前事少做一次”)</p>
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h4 id="清除文件夹所有svn"><a href="#清除文件夹所有svn" class="headerlink" title="清除文件夹所有svn"></a>清除文件夹所有svn</h4><pre><code>find . -type d -name &quot;.svn&quot;|xargs rm -rf
-</code></pre><h4 id="将文件checkout到本地目录"><a href="#将文件checkout到本地目录" class="headerlink" title="将文件checkout到本地目录"></a>将文件checkout到本地目录</h4><pre><code>svn checkout path（path是服务器上的目录）
-</code></pre><blockquote>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h4 id="清除文件夹所有svn"><a href="#清除文件夹所有svn" class="headerlink" title="清除文件夹所有svn"></a>清除文件夹所有svn</h4><pre><code>find . -type d -name &quot;.svn&quot;|xargs rm -rf</code></pre><h4 id="将文件checkout到本地目录"><a href="#将文件checkout到本地目录" class="headerlink" title="将文件checkout到本地目录"></a>将文件checkout到本地目录</h4><pre><code>svn checkout path（path是服务器上的目录）</code></pre><blockquote>
 <p>例如：svn checkout svn://192.168.1.1/pro/domain<br>简写：svn co</p>
 </blockquote>
-<h4 id="往版本库中添加新的文件"><a href="#往版本库中添加新的文件" class="headerlink" title="往版本库中添加新的文件"></a>往版本库中添加新的文件</h4><pre><code>svn add file
-</code></pre><blockquote>
+<h4 id="往版本库中添加新的文件"><a href="#往版本库中添加新的文件" class="headerlink" title="往版本库中添加新的文件"></a>往版本库中添加新的文件</h4><pre><code>svn add file</code></pre><blockquote>
 <p>例如：svn add test.php(添加test.php)<br>svn add *.php(添加当前目录下所有的php文件)</p>
 </blockquote>
-<h4 id="将改动的文件提交到版本库"><a href="#将改动的文件提交到版本库" class="headerlink" title="将改动的文件提交到版本库"></a>将改动的文件提交到版本库</h4><pre><code>svn commit -m “LogMessage“ [-N] [--no-unlock] PATH(如果选择了保持锁，就使用–no-unlock开关)
-</code></pre><blockquote>
+<h4 id="将改动的文件提交到版本库"><a href="#将改动的文件提交到版本库" class="headerlink" title="将改动的文件提交到版本库"></a>将改动的文件提交到版本库</h4><pre><code>svn commit -m “LogMessage“ [-N] [--no-unlock] PATH(如果选择了保持锁，就使用–no-unlock开关)</code></pre><blockquote>
 <p>例如：svn commit -m “add test file for my test“ test.php<br>简写：svn ci</p>
 </blockquote>
-<h4 id="加锁-解锁"><a href="#加锁-解锁" class="headerlink" title="加锁/解锁"></a>加锁/解锁</h4><pre><code>svn lock -m “LockMessage“ [--force] PATH
-</code></pre><blockquote>
+<h4 id="加锁-解锁"><a href="#加锁-解锁" class="headerlink" title="加锁/解锁"></a>加锁/解锁</h4><pre><code>svn lock -m “LockMessage“ [--force] PATH</code></pre><blockquote>
 <p>例如：svn lock -m “lock test file“ test.php<br>svn unlock PATH</p>
 </blockquote>
-<h4 id="更新到某个版本"><a href="#更新到某个版本" class="headerlink" title="更新到某个版本"></a>更新到某个版本</h4><pre><code>svn update -r m path
-</code></pre><blockquote>
+<h4 id="更新到某个版本"><a href="#更新到某个版本" class="headerlink" title="更新到某个版本"></a>更新到某个版本</h4><pre><code>svn update -r m path</code></pre><blockquote>
 <p><code>svn update</code> 如果后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本。<br><code>svn update -r 200 test.php</code>(将版本库中的文件<code>test.php</code>还原到版本<code>200</code>)<br><code>svn update test.php</code>(更新，于版本库同步。如果在提交的时候提示过期的话，是因为冲突，需要先<code>update</code>，修改文件，然后清除<code>svn resolved</code>，最后再提交<code>commit</code>)<br>简写：<code>svn up</code></p>
 </blockquote>
-<h4 id="查看文件或者目录状态"><a href="#查看文件或者目录状态" class="headerlink" title="查看文件或者目录状态"></a>查看文件或者目录状态</h4><pre><code>svn status path（目录下的文件和子目录的状态，正常状态不显示）
-</code></pre><blockquote>
+<h4 id="查看文件或者目录状态"><a href="#查看文件或者目录状态" class="headerlink" title="查看文件或者目录状态"></a>查看文件或者目录状态</h4><pre><code>svn status path（目录下的文件和子目录的状态，正常状态不显示）</code></pre><blockquote>
 <p>?：不在<code>svn</code>的控制中；<code>M</code>：内容被修改；<code>C</code>：发生冲突；<code>A</code>：预定加入到版本库；<code>K</code>：被锁定】<br><code>svn status -v path</code>(显示文件和子目录状态)<br>第一列保持相同，第二列显示工作版本号，第三和第四列显示最后一次修改的版本号和修改人。<br>注：<code>svn status、svn diff</code>和 <code>svn revert</code>这三条命令在没有网络的情况下也可以执行的，原因是svn在本地的.svn中保留了本地版本的原始拷贝。<br>简写：<code>svn st</code></p>
 </blockquote>
-<h4 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h4><pre><code>svn delete path -m “delete test fle“
-</code></pre><blockquote>
+<h4 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h4><pre><code>svn delete path -m “delete test fle“</code></pre><blockquote>
 <p>例如：<code>svn delete svn://192.168.1.1/pro/domain/test.php -m “delete test file”</code><br>或者直接<code>svn delete test.php</code> 然后再<code>svn ci -m ‘delete test file</code>‘，<br>推荐使用这种 简写：<code>svn (del, remove, rm)</code></p>
 </blockquote>
-<h4 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h4><pre><code>svn log path
-</code></pre><blockquote>
+<h4 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h4><pre><code>svn log path</code></pre><blockquote>
 <p>例如：<code>svn log test.php</code> 显示这个文件的所有修改记录，及其版本号的变化</p>
 </blockquote>
-<h4 id="查看文件详细信息"><a href="#查看文件详细信息" class="headerlink" title="查看文件详细信息"></a>查看文件详细信息</h4><pre><code>svn info path
-</code></pre><blockquote>
+<h4 id="查看文件详细信息"><a href="#查看文件详细信息" class="headerlink" title="查看文件详细信息"></a>查看文件详细信息</h4><pre><code>svn info path</code></pre><blockquote>
 <p>例如：<code>svn info test.php</code></p>
 </blockquote>
-<h4 id="比较差异"><a href="#比较差异" class="headerlink" title="比较差异"></a>比较差异</h4><pre><code>svn diff path(将修改的文件与基础版本比较)
-</code></pre><blockquote>
+<h4 id="比较差异"><a href="#比较差异" class="headerlink" title="比较差异"></a>比较差异</h4><pre><code>svn diff path(将修改的文件与基础版本比较)</code></pre><blockquote>
 <p>例如：<code>svn diff test.php</code><br>s<code>vn diff -r m:n path</code>(对版本m和版本n比较差异)<br>例如：<code>svn diff -r 200:201 test.php</code><br>简写：<code>svn di</code></p>
 </blockquote>
-<h4 id="将两个版本之间的差异合并到当前文件"><a href="#将两个版本之间的差异合并到当前文件" class="headerlink" title="将两个版本之间的差异合并到当前文件"></a>将两个版本之间的差异合并到当前文件</h4><pre><code>svn merge -r m:n path
-</code></pre><p>例如：<code>svn merge -r 200:205 test.php</code>（将版本<code>200</code>与<code>205</code>之间的差异合并到当前文件，但是一般都会产生冲突，需要处理一下）</p>
+<h4 id="将两个版本之间的差异合并到当前文件"><a href="#将两个版本之间的差异合并到当前文件" class="headerlink" title="将两个版本之间的差异合并到当前文件"></a>将两个版本之间的差异合并到当前文件</h4><pre><code>svn merge -r m:n path</code></pre><p>例如：<code>svn merge -r 200:205 test.php</code>（将版本<code>200</code>与<code>205</code>之间的差异合并到当前文件，但是一般都会产生冲突，需要处理一下）</p>
 <h4 id="SVN-帮助"><a href="#SVN-帮助" class="headerlink" title="SVN 帮助"></a>SVN 帮助</h4><pre><code>svn help
-svn help ci
-</code></pre><h4 id="版本库下的文件和目录列表"><a href="#版本库下的文件和目录列表" class="headerlink" title="版本库下的文件和目录列表"></a>版本库下的文件和目录列表</h4><pre><code>svn list path
-</code></pre><blockquote>
+svn help ci</code></pre><h4 id="版本库下的文件和目录列表"><a href="#版本库下的文件和目录列表" class="headerlink" title="版本库下的文件和目录列表"></a>版本库下的文件和目录列表</h4><pre><code>svn list path</code></pre><blockquote>
 <p>简写：<code>svn ls</code><br>显示<code>path</code>目录下的所有属于版本库的文件和目录</p>
 </blockquote>
-<h4 id="创建纳入版本控制下的新目录"><a href="#创建纳入版本控制下的新目录" class="headerlink" title="创建纳入版本控制下的新目录"></a>创建纳入版本控制下的新目录</h4><pre><code>svn mkdir: 创建纳入版本控制下的新目录。
-</code></pre><blockquote>
+<h4 id="创建纳入版本控制下的新目录"><a href="#创建纳入版本控制下的新目录" class="headerlink" title="创建纳入版本控制下的新目录"></a>创建纳入版本控制下的新目录</h4><pre><code>svn mkdir: 创建纳入版本控制下的新目录。</code></pre><blockquote>
 <p>用法: 1、<code>mkdir PATH…</code><br>      2、<code>mkdir URL…</code></p>
 </blockquote>
 <p> 创建版本控制的目录。<br>1、每一个以工作副本 <code>PATH</code> 指定的目录，都会创建在本地端，并且加入新增调度，以待下一次的提交。<br>2、每个以<code>URL</code>指定的目录，都会透过立即提交于仓库中创建。在这两个情况下，所有的中间目录都必须事先存在</p>
-<h4 id="恢复本地修改"><a href="#恢复本地修改" class="headerlink" title="恢复本地修改"></a>恢复本地修改</h4><pre><code>svn revert: 恢复原始未改变的工作副本文件 (恢复大部份的本地修改)。
-</code></pre><blockquote>
+<h4 id="恢复本地修改"><a href="#恢复本地修改" class="headerlink" title="恢复本地修改"></a>恢复本地修改</h4><pre><code>svn revert: 恢复原始未改变的工作副本文件 (恢复大部份的本地修改)。</code></pre><blockquote>
 <p>用法: <code>revert PATH…</code><br>注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复被删除的目录</p>
 </blockquote>
-<h4 id="代码库URL变更"><a href="#代码库URL变更" class="headerlink" title="代码库URL变更"></a>代码库URL变更</h4><pre><code>svn switch (sw): 更新工作副本至不同的URL。
-</code></pre><blockquote>
+<h4 id="代码库URL变更"><a href="#代码库URL变更" class="headerlink" title="代码库URL变更"></a>代码库URL变更</h4><pre><code>svn switch (sw): 更新工作副本至不同的URL。</code></pre><blockquote>
 <p> 用法: 1、<code>switch URL [PATH]</code><br> <code>switch –relocate FROM TO [PATH...]</code></p>
 </blockquote>
 <p> 1、更新你的工作副本，映射到一个新的<code>URL</code>，其行为跟<code>“svn update”</code>很像，也会将<br> 服务器上文件与本地文件合并。这是将工作副本对应到同一仓库中某个分支或者标记的<br> 方法。<br> 2、改写工作副本的<code>URL</code>元数据，以反映单纯的<code>URL</code>上的改变。当仓库的根URL变动<br> (比如方案名或是主机名称变动)，但是工作副本仍旧对映到同一仓库的同一目录时使用<br>这个命令更新工作副本与仓库的对应关系。</p>
-<h4 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h4><pre><code>svn resolved: 移除工作副本的目录或文件的“冲突”状态。
-</code></pre><blockquote>
+<h4 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h4><pre><code>svn resolved: 移除工作副本的目录或文件的“冲突”状态。</code></pre><blockquote>
 <p>用法: <code>resolved PATH</code>…<br>注意: 本子命令不会依语法来解决冲突或是移除冲突标记；它只是移除冲突的<br>相关文件，然后让 <code>PATH</code> 可以再次提交。</p>
 </blockquote>
-    </div>
-  </div>
-  
-  
-  
 
-  
+  </section>
 
-  <div class="article-footer">
-    <div class="article-meta pull-left">
-      <span>
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Newer Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2019/03/30/版本管理/Git常用命令汇总/" title="Git常用命令汇总">Git常用命令汇总</a></h2>
+                <p class="excerpt">
+                
+                git是Linus Trovalds大神的作品，是一个开放源码的版本控制软件。与SVN最大的区别，就是分布式的管理。同样为了避免自己忘记，找不到地方查看命令，总结归档一下
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-03-30T01:12:00.000Z" class="post-list__meta--date date">2019-03-30</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/Git命令/">Git命令</a>
+</span><a class="btn-border-small" href="/2019/03/30/版本管理/Git常用命令汇总/">继续阅读</a></div>
+                           
+            </div>
         
-          <i class="iconfont icon-06tags"></i>标签: 
-          
-          <span class="span--tag">
-            <a href="/tags/svn命令/">
-              #svn命令
-            </a>
-          </span>
-          
         
-      </span>
-    </div>
-    <div class="article-meta pull-right">
-    </div>
-  </div>
-</div>
-
-
-  <aside id="sidebar">
-    <p id="sidebar-header"></p>
-    <ol id="sidebar-toc"></ol>
-  </aside>
-  <script async>setTimeout(generateToc, 10);</script>
-
-
-  <nav class="post-navigation">
-    
-      <div class="nav-pre">
-        <i class="iconfont icon-prev"></i>
-        上一篇:
-        <a href="/2019/03/30/版本管理/Git常用命令汇总/" target="_self">Git常用命令汇总</a>
-      </div>
-    
-    
-      <div class="nav-next">
-        下一篇:
-        <a href="/2019/04/12/前端/HTML/HTML基础/" target="_self">HTML基础学习</a>
-        <i class="iconfont icon-next"></i>
-      </div>
-    
-  </nav>
-
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2019/03/27/iOS开发/Runtime妙用/" title="iOS Runtime的妙用">iOS Runtime的妙用</a></h2>
+                <p class="excerpt">
+                
+                
+Runtime是一套底层的C语言API（包含强大的C语言数据类型和函数）,RunTime简称运行时。OC就是运行时机制，其中最主要的是消息机制。
+苹果和GNU各自维护一个开源的runtime版本https://github.com/opensource-apple/objc4 (Apple)
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-03-27T05:14:00.000Z" class="post-list__meta--date date">2019-03-27</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/iOS-Runtime/">iOS/Runtime</a>
+</span><a class="btn-border-small" href="/2019/03/27/iOS开发/Runtime妙用/">继续阅读</a></div>
+                       
+            </div>
+        
+     
    
+   
+  
+</section>
 
   
-    <script defer>
-const valineAPI = (() => {
-  try {
-    AV.init("EU3pLs6R8jtqeOfcoQXrKyir-gzGzoHsz", "qJ21vb6aSD16W6NcEnBBmpa0");
-  } catch(error) {}
-  const isExist = (identity) => {
-    identity = identity || getRealPath();
-    let query = new AV.Query('Timer');
-    return new Promise((resolve, reject) => {
-      query.equalTo("identity", identity);
-      query.find().then(results => {
-        resolve(results.length > 0);
-      }, error => reject(error));
-    })
-  }
 
-  const _get = (identity) => {
-    let query = null;
-    if(identity && identity instanceof Array){
-      let querys = [];
-      for(let i = 0; i < identity.length; ++i) {
-        querys[i] = new AV.Query('Timer');
-        querys[i].equalTo('identity', identity[i]);
-      }
-      query = AV.Query.or.apply(null ,querys);
-    } else {
-      identity = identity || getRealPath();
-      query = new AV.Query("Timer");
-      query.equalTo("identity", identity);
-    }
-
-    return new Promise((resolve, reject) => {
-      query.find()
-      .then(results => resolve(results))
-      .catch(error => reject(error))
-    })
-  }
-
-  const create = (identity) => {
-    identity = identity || getRealPath();
-    return new Promise((resolve, reject) => {
-      let Todo = AV.Object.extend('Timer');
-      let todo = new Todo();
-      todo.set("times", 1);
-      todo.set("identity", identity);
-      todo.save().then(res => resolve(true), error => reject(error));
-    })
-  }
-
-  const update = (identity) => {
-    identity = identity || getRealPath();
-    return new Promise((resolve, reject) => {
-      let query = new AV.Query('Timer');
-      query.equalTo("identity", identity);
-      query.find().then(todos => {
-        todos.forEach(todo => {
-          todo.set("times", todo.attributes.times + 1);
-        });
-        return AV.Object.saveAll(todos);
-      }).then(todos => resolve(true), error => reject(error));
-    })
-  }
-
-  return {
-    isExist,
-    _get,
-    update,
-    create
-  }
-})()
-
-const calcAndWriteTimes = () => {
-  let isPost = true;
-
-  let timerAllDOM = document.querySelectorAll(".article-timer");
-
-  if(isPost) {
-    let identity = timerAllDOM[0].getAttribute("data-identity");
-    valineAPI.isExist(identity)
-    .then(exist => {
-      if(exist) {
-        return valineAPI.update(identity);
-      }
-      return new Promise(resolve => resolve(true));
-    })
-    .then( succuess => valineAPI._get(identity))
-    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
-    .catch(error => console.log(error.message))
-    return ;
-  }
-
-  let timerDOMCache = {};
-
-  for(let timerDOM of timerAllDOM) {
-    let identity = timerDOM.getAttribute("data-identity");
-    if(timerDOMCache.hasOwnProperty(identity)){
-      timerDOMCache[identity].dom.push(timerDOM);
-    }else{
-      timerDOMCache[identity] = {
-        dom: [timerDOM],
-        times: undefined
-      };
-    }
-  }
-
-  let identities = Object.keys(timerDOMCache);
-  valineAPI._get(identities).then(results => {
-    for(let result of results) {
-      let {identity, times} = result.attributes;
-      timerDOMCache[identity].times = times;
-      timerDOMCache[identity].dom.map(item => item.innerText = times);
-    }
-    for(let identity of identities) {
-      if(timerDOMCache[identity].times){
-        continue;
-      }
-      timerDOMCache[identity].dom.map(item => item.innerText = 1);
-      valineAPI.create(identity);
-    }
-  }).catch(error => console.log(error.message))
-}
-
-if(true){
-  calcAndWriteTimes();
-}
-</script>
-   
-
-</div>
-
-
-    <footer>
-  <p class="site-info">
-    <span>业精于勤，荒于嬉；行成于思，毁于随。</span>
-    <!-- 博客已运行<span id="time-to-now"></span> -->
-    <!-- <span class="my-face">(●'◡'●)ﾉ♥</span> -->
-    <br>
-      <a href>最困难的事情就是认识自己.</a>
-    <!-- Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a> -->
-    <br>
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2019 ixmwl - 知识 & 情怀 | 二者兼得。
+       
+    </span>
+    <span class="footer__copyright">
+             - 业精于勤，荒于嬉；行成于思，毁于随
+         </span>
+       
     
-  </p>
+    
 </footer>
 
 
+        </div>
+    </div>
 
+     
 <script>
-const timeToNowDOM = document.querySelector("#time-to-now");
-const startTimestamp = new Date(2019, 1, 10).getTime();
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-const updateTimeStr = () => {
-  let offset = parseInt(
-      (new Date().getTime() - startTimestamp) / 1000,
-      10
-    ),
-    day = Math.floor(offset / 86400),
-    hour = Math.floor((offset % 86400) / 3600),
-    minute = Math.floor(((offset % 86400) % 3600) / 60),
-    second = Math.floor(((offset % 86400) % 3600) % 60);
-  timeToNowDOM.innerHTML =
-    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
-  setTimeout(updateTimeStr, 500);
-}
-
-setTimeout(updateTimeStr, 500);
+	ga('create', 'UA-78918255-1', 'auto');
+	ga('send', 'pageview');
 </script>
 
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?9cdad07c755fa23f6aced510c6760e87";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 
-    <div class="back-to-top hidden">
-  <span>
-    <i class="iconfont icon-60"></i><span></span>%
-  </span>
-</div>
 
-<script>
-const updateIconToTop = percent => {
-  let dom = document.querySelector(".back-to-top span span");
-  dom.innerText = percent;
-  if(percent < 1) {
-    document.querySelector(".back-to-top").className = "back-to-top hidden";
-  } else {
-    document.querySelector(".back-to-top").className = "back-to-top";
-  }
-}
 
-const handleScoll = () => {
-  let isRunning = false;
-  return () => {
-    if (isRunning) return;
-    isRunning = true;
-    window.requestAnimationFrame(timestamp => {
-      let scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop,
-        scrollHeight =
-          document.documentElement.scrollHeight ||
-          document.body.scrollHeight,
-        clientHeight =
-          document.documentElement.clientHeight ||
-          document.body.clientHeight;
-      isRunning = false;
-      if (scrollTop <= 1) {
-        updateIconToTop(0);
-        return;
-      }
-      if (scrollTop + clientHeight >= scrollHeight) {
-        updateIconToTop(100);
-      } else {
-        updateIconToTop(parseInt(
-          100 * scrollTop / (scrollHeight - clientHeight),
-          10
-        ));
-      }
-    });
-  };
-}
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
 
-const backToTop = () => {
-  let scrollTop =
-      document.documentElement.scrollTop || document.body.scrollTop,
-    delay = 10,
-    time = 200;
-  if (scrollTop <= 20) {
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    return;
-  }
-  let step = Math.ceil(scrollTop * delay / time);
-  let timer = setInterval(() => {
-    scrollTop =
-      document.documentElement.scrollTop || document.body.scrollTop;
-    if (scrollTop - step <= 0) {
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      clearInterval(timer);
-    } else {
-      document.documentElement.scrollTop = scrollTop - step;
-      document.body.scrollTop = scrollTop - step;
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
     }
-  }, delay);
-}
-
-document.addEventListener("scroll", handleScoll(), false);
-
-document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
-
+  });
 </script>
 
-  </div>
-
-  
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
-<script>
-  (() => {
-    const mathjaxConfig = {
-      showProcessingMessages: false, //关闭js加载过程信息
-      messageStyle: "none", //不显示信息
-      jax: ["input/TeX", "output/HTML-CSS"],
-      tex2jax: {
-        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
-        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
-        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
-      },
-      "HTML-CSS": {
-        availableFonts: ["STIX", "TeX"], //可选字体
-        showMathMenu: false //关闭右击菜单显示
-      }
-    }
-
-    let mathjaxInterval = setInterval(() => {
-      if(!window.MathJax){
-        return;
-      }
-      window.MathJax.Hub.Config(mathjaxConfig)
-      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
-
-      clearInterval(mathjaxInterval)
-    }, 10)    
-  })()
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
-  
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
-  <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
-<script async>
-  let fancyTimer = setInterval(function(){
-    if(!window.$){
-      return;
-    }
-    $(document).ready(function() {
-      $(".post img").each(function () {
-        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
-          return;
-        }
-        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
-        var element = document.createElement("a");
-        $(element).attr("data-fancybox", "gallery");
-        $(element).attr("href", $(this).attr("src"));
-        $(this).wrap(element);
-      });
-      
-      clearInterval(fancyTimer);
-    });
-  }, 10);
-</script>
 
-  
 </body>
 
 </html>
